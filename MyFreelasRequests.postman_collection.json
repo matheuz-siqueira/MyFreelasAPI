@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "0a032823-05ef-47cd-8b9b-5e4b7b8a2d6d",
+		"name": "MyFreelasRequests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27540983"
+	},
+	"item": [
+		{
+			"name": "create-account",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Validar se a requisição foi feita com sucesso\", function(){",
+							"    pm.response.to.have.status(201);",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.have.jsonBody(\"name\");",
+							"    pm.response.to.have.jsonBody(\"lastName\");",
+							"    pm.response.to.have.jsonBody(\"email\");",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"password\",\n  \"confirmPassword\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/users/create-account",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"create-account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URLBASE",
+			"value": "https://localhost:7148",
+			"type": "string"
+		}
+	]
+}
