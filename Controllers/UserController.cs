@@ -8,6 +8,8 @@ namespace myfreelas.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Produces("application/json")]
+[ApiConventionType(typeof(DefaultApiConventions))]
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
@@ -20,6 +22,16 @@ public class UserController : ControllerBase
         _validator = validator; 
     } 
 
+    /// <summary> 
+    /// Registrar usuário no sistema
+    /// </summary>
+    /// <remarks>
+    /// {"name":"string","lastName":"string","email":"string","password":"string","confirmPassword":"string"}
+    /// </remarks> 
+    /// <params name="request">Dados do usuário</params>
+    /// <returns>Usuário recém cadastrado</returns>
+    /// <response code="201">Sucesso</response>
+    /// <response code="400">Erro na requisição</response>
     [HttpPost("create-account")]
     public async Task<ActionResult<ResponseRegisterUserJson>> PostUser(
         [FromBody] RequestRegisterUserJson request) 

@@ -1,6 +1,8 @@
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using myfreelas.Data;
 using myfreelas.Dtos.User;
 using myfreelas.Mapper;
@@ -33,8 +35,25 @@ builder.Services.AddScoped(provider => new AutoMapper.MapperConfiguration(cfg =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => 
+{
+    c.SwaggerDoc("v1", new OpenApiInfo  
+    {
+        Title = "MyFrellasAPI",
+        Version = "v1",
+        Description = "Gerenciador de projetos freelas", 
+        Contact = new OpenApiContact 
+        {
+            Name = "Matheus Siqueira", 
+            Email = "matheussiqueira.work@gmail.com", 
+            Url = new Uri("https://www.linkedin.com/in/matheussiqueira-me/")
+        }
+    });
 
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);  
+});
 
 
 var app = builder.Build();
