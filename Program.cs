@@ -1,15 +1,19 @@
 using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using myfreelas.Data;
 using myfreelas.Dtos.User;
 using myfreelas.Mapper;
-using myfreelas.Models;
 using myfreelas.Repositories.User;
 using myfreelas.Services.User;
 using myfreelas.Validators;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IValidator<RequestRegisterUserJson>, RegisterUserValidator>();
-
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddDbContext<Context>(
     options => options.UseMySql(
@@ -30,6 +34,21 @@ builder.Services.AddScoped(provider => new AutoMapper.MapperConfiguration(cfg =>
     cfg.AddProfile(new MappingProfile());
 }).CreateMapper());
 
+//Configurações para usar Autenticação com JWT
+var JWTKey = Encoding.ASCII.GetBytes(builder.Configuration["JWTKey"]);
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(JWTKey),
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = false,
+            ValidateAudience = false,
+        };
+    });
 
 
 builder.Services.AddControllers();
@@ -66,6 +85,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
