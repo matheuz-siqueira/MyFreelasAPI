@@ -13,7 +13,7 @@ using myfreelas.Validators;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-
+using myfreelas.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +21,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IValidator<RequestRegisterUserJson>, RegisterUserValidator>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<IValidator<RequestAuthenticationJson>, AuthenticationValidator>();
+
 
 builder.Services.AddDbContext<Context>(
     options => options.UseMySql(
