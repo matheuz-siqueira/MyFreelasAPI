@@ -15,10 +15,12 @@ public class MappingProfile : Profile
     private void RequestForEntity()
     {
         CreateMap<RequestRegisterUserJson, User>(); 
+        CreateMap<RequestAuthenticationJson, User>(); 
     }
 
     private void EntityForResponse()
     {
         CreateMap<User, ResponseRegisterUserJson>(); 
+        CreateMap<User, ResponseAuthenticationJson>();
     }
 }
