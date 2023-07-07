@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +10,12 @@ using myfreelas.Repositories.User;
 
 namespace myfreelas.Authentication;
 
-public class AuthenticationService : IAuthenticationService
+public class LoginService : ILoginService
 {
     private readonly IUserRepository _repository;
     private readonly IConfiguration _configuration; 
     private readonly IMapper _mapper;
-    public AuthenticationService(
+    public LoginService(
         [FromServices] IUserRepository repository,
         [FromServices] IMapper mapper, 
         [FromServices] IConfiguration configuration)
@@ -28,7 +29,7 @@ public class AuthenticationService : IAuthenticationService
         var user = _repository.GetByEmail(request.Email);
         if((user is null) || (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password)))
         {
-            throw new Exception("Usuário ou senha incorretos"); 
+            throw new BadHttpRequestException("Usuário ou senha incorretos"); 
         }
 
         var tokenJWT = GenerateToken(user);
@@ -44,9 +45,14 @@ public class AuthenticationService : IAuthenticationService
                 new SymmetricSecurityKey(JWTKey),
                 SecurityAlgorithms.HmacSha256);
 
+        var claims = new List<Claim>();       
+        claims.Add(new Claim(ClaimTypes.Name, user.Name));
+        claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())); 
+
         var tokenJWT = new JwtSecurityToken(
             expires: DateTime.Now.AddHours(8),
-            signingCredentials: credenciais
+            signingCredentials: credenciais,
+            claims: claims
         );  
 
         return new JwtSecurityTokenHandler().WriteToken(tokenJWT);
