@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.User;
 using myfreelas.Exceptions.ErrorsValidators;
@@ -53,6 +54,20 @@ public class UserController : ControllerBase
         {
             return BadRequest(new { message = e.Message} );
         }
+    }
+
+    /// <summary> 
+    /// Obter perfil do usuário logado
+    /// </summary>
+    /// <returns>Perfil</returns>
+    /// <response code="200">Sucesso</response>
+    /// <response code="401">Não autenticado</response>
+    [Authorize]  
+    [HttpGet("get-profile")]
+    public async Task<ActionResult<ResponseProfileJson>> GetProfile()
+    {
+        var response = await _service.GetProfileAsync(User); 
+        return Ok(response);
     }
 
 }
