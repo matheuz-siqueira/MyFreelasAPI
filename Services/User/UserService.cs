@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using myfreelas.Authentication;
 using myfreelas.Dtos.User;
 using myfreelas.Repositories.User;
 
@@ -10,16 +11,18 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _repository;
     private readonly IMapper _mapper;
-    
+    private readonly ILoginService _service;
 
     public UserService(
         [FromServices] IUserRepository repository,
-        [FromServices] IMapper mapper)
+        [FromServices] IMapper mapper,
+        [FromServices] ILoginService service)
     {
         _repository = repository;
         _mapper = mapper;
+        _service = service;
     }
-    public async Task<ResponseRegisterUserJson> RegisterUser(
+    public async Task<ResponseAuthenticationJson> RegisterUserAsync(
         RequestRegisterUserJson request)
     {
     
@@ -35,9 +38,10 @@ public class UserService : IUserService
         }
 
         var user = _mapper.Map<Models.User>(request); 
+        var login = _mapper.Map<RequestAuthenticationJson>(user);
         user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password); 
         await _repository.CreateUserAsync(user); 
-        var response = _mapper.Map<ResponseRegisterUserJson>(user); 
-        return response; 
+        return _service.Login(login);
+
     }
 }

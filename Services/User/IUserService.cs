@@ -4,6 +4,6 @@ namespace myfreelas.Services.User;
 
 public interface IUserService
 {
-    Task<ResponseRegisterUserJson> RegisterUser(RequestRegisterUserJson request);   
+    Task<ResponseAuthenticationJson> RegisterUserAsync(RequestRegisterUserJson request);   
     
 }
