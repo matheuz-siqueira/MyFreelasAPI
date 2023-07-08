@@ -23,6 +23,7 @@ public class MappingProfile : Profile
     {
         CreateMap<User, ResponseRegisterUserJson>(); 
         CreateMap<User, ResponseAuthenticationJson>();
+        CreateMap<User, ResponseProfileJson>();
     }
 
     private void EntityToRequest()
