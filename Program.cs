@@ -1,19 +1,17 @@
 using System.Reflection;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using myfreelas.Data;
-using myfreelas.Dtos.User;
 using myfreelas.Mapper;
 using myfreelas.Repositories.User;
 using myfreelas.Services.User;
-using myfreelas.Validators;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using myfreelas.Authentication;
+using myfreelas.Dtos.User;
+using myfreelas.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +22,6 @@ builder.Services.AddScoped<IValidator<RequestRegisterUserJson>, RegisterUserVali
 
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IValidator<RequestAuthenticationJson>, AuthenticationValidator>();
-
 
 builder.Services.AddDbContext<Context>(
     options => options.UseMySql(
@@ -55,6 +52,7 @@ builder.Services
 
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => 

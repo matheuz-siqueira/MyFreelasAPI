@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Authentication;
 using myfreelas.Dtos.User;
+using myfreelas.Exceptions.ErrorsValidators;
 
 namespace myfreelas.Controllers;
 
@@ -14,9 +15,12 @@ public class AuthenticationController : ControllerBase
 {
     private readonly ILoginService _service;
     private readonly IValidator<RequestAuthenticationJson> _validator;
-    public AuthenticationController([FromServices] ILoginService service)
+    public AuthenticationController(
+        [FromServices] ILoginService service,
+        [FromServices] IValidator<RequestAuthenticationJson> validator)
     {
         _service = service;
+        _validator = validator; 
     }
 
     /// <summary> 
@@ -33,6 +37,11 @@ public class AuthenticationController : ControllerBase
     public ActionResult<ResponseAuthenticationJson> Login
         ([FromBody] RequestAuthenticationJson request)
     {
+        var result = _validator.Validate(request); 
+        if(!result.IsValid)
+        {
+            return BadRequest(result.Errors.ToCustomValidationFailure());
+        }
         try
         {
             var respone =  _service.Login(request); 
