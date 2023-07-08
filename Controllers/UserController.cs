@@ -33,7 +33,7 @@ public class UserController : ControllerBase
     /// <response code="201">Sucesso</response>
     /// <response code="400">Erro na requisição</response>
     [HttpPost("create-account")]
-    public async Task<ActionResult<ResponseRegisterUserJson>> PostUser(
+    public async Task<ActionResult<ResponseAuthenticationJson>> PostUser(
         [FromBody] RequestRegisterUserJson request) 
     {
         // var result = _validator.Validate(request);
@@ -44,8 +44,8 @@ public class UserController : ControllerBase
         
         try 
         {
-            var response = await _service.RegisterUser(request);
-            return StatusCode(201, response);
+            var response = await _service.RegisterUserAsync(request);
+            return Ok(response);
         }
         catch(BadHttpRequestException e)
         {

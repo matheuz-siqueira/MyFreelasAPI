@@ -8,19 +8,25 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        RequestForEntity();
-        EntityForResponse();
+        RequestToEntity();
+        EntityToResponse();
+        EntityToRequest();
     }
 
-    private void RequestForEntity()
+    private void RequestToEntity()
     {
         CreateMap<RequestRegisterUserJson, User>(); 
         CreateMap<RequestAuthenticationJson, User>(); 
     }
 
-    private void EntityForResponse()
+    private void EntityToResponse()
     {
         CreateMap<User, ResponseRegisterUserJson>(); 
         CreateMap<User, ResponseAuthenticationJson>();
+    }
+
+    private void EntityToRequest()
+    {
+        CreateMap<User, RequestAuthenticationJson>();
     }
 }
