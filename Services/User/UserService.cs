@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,14 @@ public class UserService : IUserService
         _mapper = mapper;
         _service = service;
     }
+
+    public async Task<ResponseProfileJson> GetProfileAsync(ClaimsPrincipal logged)
+    {
+        var userId = int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier)); 
+        var user = await _repository.GetProfileAsync(userId); 
+        return _mapper.Map<ResponseProfileJson>(user); 
+    }
+
     public async Task<ResponseAuthenticationJson> RegisterUserAsync(
         RequestRegisterUserJson request)
     {
