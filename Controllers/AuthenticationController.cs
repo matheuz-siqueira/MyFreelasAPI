@@ -9,6 +9,7 @@ namespace myfreelas.Controllers;
 [ApiController]
 [Route("api/authentication")]
 [Produces("application/json")]
+[ApiConventionType(typeof(DefaultApiConventions))]
 public class AuthenticationController : ControllerBase
 {
     private readonly ILoginService _service;
@@ -18,6 +19,16 @@ public class AuthenticationController : ControllerBase
         _service = service;
     }
 
+    /// <summary> 
+    /// Logar no sistema
+    /// </summary>
+    /// <remarks> 
+    /// { "email": "string", "password": "string" }
+    /// </remarks>
+    /// <params name="request">Credencias de login</params>
+    /// <returns>Token</returns>
+    /// <response code="200">Sucesso</response> 
+    /// <response code="400">Erro</response>
     [HttpPost("login")]
     public ActionResult<ResponseAuthenticationJson> Login
         ([FromBody] RequestAuthenticationJson request)
