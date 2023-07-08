@@ -1,4 +1,5 @@
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.User;
 using myfreelas.Exceptions.ErrorsValidators;
@@ -14,6 +15,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _service;
     private readonly IValidator<RequestRegisterUserJson> _validator;
+
     public UserController(
         [FromServices] IUserService service, 
         [FromServices] IValidator<RequestRegisterUserJson> validator)
@@ -36,12 +38,12 @@ public class UserController : ControllerBase
     public async Task<ActionResult<ResponseAuthenticationJson>> PostUser(
         [FromBody] RequestRegisterUserJson request) 
     {
-        // var result = _validator.Validate(request);
-        // if(!result.IsValid)
-        // {
-        //     return BadRequest(result.Errors.ToUserValidationFailure());
-        // }
-        
+         
+        var result = _validator.Validate(request);
+        if(!result.IsValid)
+        {
+            return BadRequest(result.Errors.ToCustomValidationFailure());
+        } 
         try 
         {
             var response = await _service.RegisterUserAsync(request);
