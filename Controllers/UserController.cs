@@ -36,11 +36,11 @@ public class UserController : ControllerBase
     public async Task<ActionResult<ResponseRegisterUserJson>> PostUser(
         [FromBody] RequestRegisterUserJson request) 
     {
-        var result = _validator.Validate(request);
-        if(!result.IsValid)
-        {
-            return BadRequest(result.Errors.ToUserValidationFailure());
-        }
+        // var result = _validator.Validate(request);
+        // if(!result.IsValid)
+        // {
+        //     return BadRequest(result.Errors.ToUserValidationFailure());
+        // }
         
         try 
         {
