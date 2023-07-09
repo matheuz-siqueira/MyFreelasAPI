@@ -23,6 +23,8 @@ builder.Services.AddScoped<IValidator<RequestRegisterUserJson>, RegisterUserVali
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IValidator<RequestAuthenticationJson>, AuthenticationValidator>();
 
+builder.Services.AddScoped<IValidator<RequestUpdatePasswordJson>, UpdatePasswordValidator>();
+
 builder.Services.AddDbContext<Context>(
     options => options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
