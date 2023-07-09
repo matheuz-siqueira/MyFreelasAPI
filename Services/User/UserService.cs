@@ -53,4 +53,17 @@ public class UserService : IUserService
         return _service.Login(login);
 
     }
+
+    public async Task UpdatePasswordAsync(RequestUpdatePasswordJson request, ClaimsPrincipal logged)
+    {
+        var id = int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
+        var user = await _repository.GetByIdAsync(id); 
+        if(!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
+        {
+            throw new Exception("Senha incorreta"); 
+        }
+
+        user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        await _repository.UpdatePasswordAsync(user); 
+    }
 }

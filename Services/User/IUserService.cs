@@ -7,5 +7,7 @@ public interface IUserService
 {
     Task<ResponseAuthenticationJson> RegisterUserAsync(RequestRegisterUserJson request);   
     Task<ResponseProfileJson> GetProfileAsync(ClaimsPrincipal logged); 
+    Task UpdatePasswordAsync(RequestUpdatePasswordJson request, ClaimsPrincipal logged); 
+    
     
 }
