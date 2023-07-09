@@ -73,6 +73,18 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+
+    /// <summary> 
+    /// Atualizar senha do usuário logado
+    /// </summary>  
+    /// <remarks> 
+    /// { "currentPassword":"string","newPassword":"string" }
+    /// </remarks> 
+    /// <params name="request">Dados para alterar senha</params>
+    /// <returns>Nada</returns>
+    /// <response code="204">Sucesso</response> 
+    /// <response code="400">Erro</response> 
+    /// <response code="401">Não autenticado</response> 
     [Authorize]
     [HttpPut("update-password")]
     public async Task<ActionResult> UpdatePassword(
