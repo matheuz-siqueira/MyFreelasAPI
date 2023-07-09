@@ -160,6 +160,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "update-password",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let newPassword = pm.variables.replaceIn(\"{{$ramdomPassword}}\")",
+							"",
+							"postman.setGlobalVariable(\"NEWPASSWORD\", newPassword);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Alterar senha do usuário\", function(){",
+							"    pm.response.to.have.status(204);",
+							"    var newPassword = postman.getGlobalVariable(\"NEWPASSWORD\");",
+							"",
+							"",
+							"    pm.environment.get(\"PASSWORD\", newPassword);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"currentPassword\": \"{{PASSWORD}}\",\n  \"newPassword\": \"{{NEWPASSWORD}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/users/update-password",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"update-password"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

@@ -15,14 +15,17 @@ namespace myfreelas.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
-    private readonly IValidator<RequestRegisterUserJson> _validator;
+    private readonly IValidator<RequestRegisterUserJson> _validatorRegisterUser; 
+    private readonly IValidator<RequestUpdatePasswordJson> _validatorUpdatePassword; 
 
     public UserController(
         [FromServices] IUserService service, 
-        [FromServices] IValidator<RequestRegisterUserJson> validator)
+        [FromServices] IValidator<RequestRegisterUserJson> validatorRegisterUser,
+        [FromServices] IValidator<RequestUpdatePasswordJson> validatorUpdatePassword)
     {
         _service = service; 
-        _validator = validator; 
+        _validatorRegisterUser = validatorRegisterUser; 
+        _validatorUpdatePassword = validatorUpdatePassword;
     } 
 
     /// <summary> 
@@ -40,7 +43,7 @@ public class UserController : ControllerBase
         [FromBody] RequestRegisterUserJson request) 
     {
          
-        var result = _validator.Validate(request);
+        var result = _validatorRegisterUser.Validate(request);
         if(!result.IsValid)
         {
             return BadRequest(result.Errors.ToCustomValidationFailure());
@@ -68,6 +71,28 @@ public class UserController : ControllerBase
     {
         var response = await _service.GetProfileAsync(User); 
         return Ok(response);
+    }
+
+    [Authorize]
+    [HttpPut("update-password")]
+    public async Task<ActionResult> UpdatePassword(
+        [FromBody] RequestUpdatePasswordJson request)
+    {
+        var result = _validatorUpdatePassword.Validate(request);  
+        if(!result.IsValid)
+        {
+            return BadRequest(result.Errors.ToCustomValidationFailure());
+        }
+        try 
+        {
+            await _service.UpdatePasswordAsync(request, User); 
+            return NoContent();
+        }
+        catch(Exception e)
+        {
+            return BadRequest(new { message = e.Message });
+        }
+
     }
 
 }
