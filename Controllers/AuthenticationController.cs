@@ -8,7 +8,8 @@ using myfreelas.Exceptions.ErrorsValidators;
 namespace myfreelas.Controllers;
 
 [ApiController]
-[Route("api/authentication")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/authentication")]
 [Produces("application/json")]
 [ApiConventionType(typeof(DefaultApiConventions))]
 public class AuthenticationController : ControllerBase
