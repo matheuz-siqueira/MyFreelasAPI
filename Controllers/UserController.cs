@@ -9,7 +9,8 @@ using myfreelas.Services.User;
 namespace myfreelas.Controllers;
 
 [ApiController]
-[Route("api/users")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/users")]
 [Produces("application/json")]
 [ApiConventionType(typeof(DefaultApiConventions))]
 public class UserController : ControllerBase
