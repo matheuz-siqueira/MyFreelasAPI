@@ -23,6 +23,7 @@ public class User
     [Required]
     [Column(TypeName = "varchar(60)")]
     public string Password { get; set; }
-    
+
+    public List<Customer> Customers { get; set; }
 
 }
