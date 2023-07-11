@@ -13,6 +13,8 @@ using myfreelas.Authentication;
 using myfreelas.Dtos.User;
 using myfreelas.Validators;
 using Microsoft.AspNetCore.Mvc;
+using myfreelas.Repositories.Customer;
+using myfreelas.Services.Customer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +22,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IValidator<RequestRegisterUserJson>, RegisterUserValidator>();
-
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IValidator<RequestAuthenticationJson>, AuthenticationValidator>();
-
 builder.Services.AddScoped<IValidator<RequestUpdatePasswordJson>, UpdatePasswordValidator>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>(); 
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 
 builder.Services.AddDbContext<Context>(
     options => options.UseMySql(

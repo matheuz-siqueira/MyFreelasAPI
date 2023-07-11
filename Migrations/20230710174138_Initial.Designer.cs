@@ -10,7 +10,7 @@ using myfreelas.Data;
 namespace myfreelas.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230710123854_Initial")]
+    [Migration("20230710174138_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,13 @@ namespace myfreelas.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
                     b.Property<int>("Type")

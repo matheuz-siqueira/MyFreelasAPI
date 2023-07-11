@@ -1,4 +1,5 @@
 using AutoMapper;
+using myfreelas.Dtos.Customer;
 using myfreelas.Dtos.User;
 using myfreelas.Models;
 
@@ -16,7 +17,8 @@ public class MappingProfile : Profile
     private void RequestToEntity()
     {
         CreateMap<RequestRegisterUserJson, User>(); 
-        CreateMap<RequestAuthenticationJson, User>(); 
+        CreateMap<RequestAuthenticationJson, User>();
+        CreateMap<RequestRegisterCustomerJson, Customer>(); 
     }
 
     private void EntityToResponse()
@@ -24,6 +26,7 @@ public class MappingProfile : Profile
         CreateMap<User, ResponseRegisterUserJson>(); 
         CreateMap<User, ResponseAuthenticationJson>();
         CreateMap<User, ResponseProfileJson>();
+        CreateMap<Customer, ResponseRegisterCustomerJson>();
     }
 
     private void EntityToRequest()
