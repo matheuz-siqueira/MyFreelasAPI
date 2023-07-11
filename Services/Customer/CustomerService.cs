@@ -25,6 +25,7 @@ public class CustomerService : ICustomerService
         }
 
         var customer = _mapper.Map<Models.Customer>(request); 
+        customer.UserId = 1;
         await _repository.RegistesrCustomerAsync(customer); 
         var response = _mapper.Map<ResponseRegisterCustomerJson>(customer);
         return response; 

@@ -25,13 +25,19 @@ namespace myfreelas.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("OtherContact")
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
