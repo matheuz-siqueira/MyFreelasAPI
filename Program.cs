@@ -15,6 +15,7 @@ using myfreelas.Validators;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Repositories.Customer;
 using myfreelas.Services.Customer;
+using myfreelas.Dtos.Customer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IValidator<RequestAuthenticationJson>, Authentication
 builder.Services.AddScoped<IValidator<RequestUpdatePasswordJson>, UpdatePasswordValidator>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>(); 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IValidator<RequestRegisterCustomerJson>, RegisterCustomerValidator>();
 
 
 builder.Services.AddDbContext<Context>(

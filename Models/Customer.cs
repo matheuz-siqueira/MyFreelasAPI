@@ -21,10 +21,10 @@ public class Customer
     public string Email { get; set; }
 
     [Required]
-    [Column(TypeName = "varhcar(20)")]
+    [Column(TypeName = "varchar(20)")]
     public string PhoneNumber { get; set; }
 
-    [Column(TypeName = "varhcar(150)")]
+    [Column(TypeName = "varchar(150)")]
     public string OtherContact { get; set; }
 
     //Navigation property
