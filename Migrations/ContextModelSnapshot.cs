@@ -24,7 +24,13 @@ namespace myfreelas.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
                     b.Property<int>("Type")
@@ -38,31 +44,6 @@ namespace myfreelas.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("myfreelas.Models.CustomerContact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Other")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerContact");
                 });
 
             modelBuilder.Entity("myfreelas.Models.User", b =>
@@ -101,22 +82,6 @@ namespace myfreelas.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("myfreelas.Models.CustomerContact", b =>
-                {
-                    b.HasOne("myfreelas.Models.Customer", "Customer")
-                        .WithMany("Contacts")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("myfreelas.Models.Customer", b =>
-                {
-                    b.Navigation("Contacts");
                 });
 
             modelBuilder.Entity("myfreelas.Models.User", b =>
