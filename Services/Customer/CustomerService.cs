@@ -17,6 +17,18 @@ public class CustomerService : ICustomerService
         _repository = repository; 
         _mapper = mapper; 
     }
+
+    public async Task<ResponseCustomerJson> GetByIdAsync(int id, ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged);
+        var customer = await _repository.GetByIdAsync(id, userId); 
+        if(customer is null)
+        {
+            throw new BadHttpRequestException("Cliente não encontrado");
+        }
+        return _mapper.Map<ResponseCustomerJson>(customer); 
+    }
+
     public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
         RequestRegisterCustomerJson request, ClaimsPrincipal logged)
     {

@@ -27,6 +27,7 @@ public class MappingProfile : Profile
         CreateMap<User, ResponseAuthenticationJson>();
         CreateMap<User, ResponseProfileJson>();
         CreateMap<Customer, ResponseRegisterCustomerJson>();
+        CreateMap<Customer, ResponseCustomerJson>();
     }
 
     private void EntityToRequest()

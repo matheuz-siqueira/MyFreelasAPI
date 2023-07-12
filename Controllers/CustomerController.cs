@@ -55,4 +55,24 @@ public class CustomerController : ControllerBase
             return BadRequest(new {message = e.Message} );
         }
     }
+
+    [Authorize]
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ResponseRegisterCustomerJson>> GetByIdAsync(
+        [FromRoute] int id) 
+    {
+        try 
+        {
+            var response = await _service.GetByIdAsync(id, User); 
+            return Ok(response); 
+        }
+        catch(BadHttpRequestException e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+        catch
+        {
+            return BadRequest("Erro de requisição"); 
+        }
+    }
 }
