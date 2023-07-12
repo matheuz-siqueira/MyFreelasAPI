@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.Customer;
@@ -16,7 +17,8 @@ public class CustomerService : ICustomerService
         _repository = repository; 
         _mapper = mapper; 
     }
-    public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(RequestRegisterCustomerJson request)
+    public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
+        RequestRegisterCustomerJson request, ClaimsPrincipal logged)
     {
         var exists = _repository.GetByEmail(request.Email);
         if(exists is not null)
@@ -25,9 +27,15 @@ public class CustomerService : ICustomerService
         }
 
         var customer = _mapper.Map<Models.Customer>(request); 
-        customer.UserId = 1;
+        customer.UserId = GetCurrentUserId(logged); 
+
         await _repository.RegistesrCustomerAsync(customer); 
         var response = _mapper.Map<ResponseRegisterCustomerJson>(customer);
         return response; 
+    }
+
+    private int GetCurrentUserId(ClaimsPrincipal logged)
+    {
+        return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 }

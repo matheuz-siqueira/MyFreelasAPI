@@ -25,6 +25,16 @@ public class CustomerController : ControllerBase
         _validatorRegisterCustomer = validatorRegisterCustomer; 
     }
 
+    /// <summary> 
+    /// Registra cliente 
+    /// </summary>
+    /// <remarks>
+    /// {"name":"string","type":0,"email":"string","phoneNumber":"string","otherContact":"string"}
+    /// </remarks>
+    /// <params name="request">Dados do cliente</params> 
+    /// <returns>Cliente cadastrado</returns>
+    /// <response code="201">Sucesso</response> 
+    /// <response code="400">Erro</response> 
     [Authorize]
     [HttpPost("register-customer")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> RegisterCustomerAsync(
@@ -37,7 +47,7 @@ public class CustomerController : ControllerBase
         }
         try 
         {
-            var response = await _service.RegisterCustomerAsync(request); 
+            var response = await _service.RegisterCustomerAsync(request, User); 
             return StatusCode(201, response); 
         }
         catch(BadHttpRequestException e)
