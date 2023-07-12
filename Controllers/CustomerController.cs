@@ -35,6 +35,8 @@ public class CustomerController : ControllerBase
     /// <returns>Cliente cadastrado</returns>
     /// <response code="201">Sucesso</response> 
     /// <response code="400">Erro</response> 
+    /// <response code="401">Não autenticado</response>
+
     [Authorize]
     [HttpPost("register-customer")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> RegisterCustomerAsync(
@@ -56,8 +58,18 @@ public class CustomerController : ControllerBase
         }
     }
 
+
+    /// <summary> 
+    /// Obter cliente pelo Id
+    /// </summary>
+    /// <params name="id">ID do cliente</params> 
+    /// <returns>Cliente correspondente ao ID</returns> 
+    /// <response code="200">Sucesso</response> 
+    /// <response code="401">Não autenticado</response>
+    /// <response code="400">Erro na requisição</response> 
+    /// <response code="404">Não encontrado</response>  
     [Authorize]
-    [HttpGet("{id:int}")]
+    [HttpGet("getbyid/{id:int}")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> GetByIdAsync(
         [FromRoute] int id) 
     {

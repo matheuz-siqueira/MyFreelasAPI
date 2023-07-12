@@ -313,6 +313,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "getbyid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar cliente por id com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"id\");",
+									"    pm.response.to.have.jsonBody(\"name\");",
+									"    pm.response.to.have.jsonBody(\"email\");",
+									"    pm.response.to.have.jsonBody(\"type\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibmFtZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMSIsImV4cCI6MTY4OTIwNDQ2Mn0.-NsLHAXbWGaqsvd4i-KGmnvcLNLgQDiQbpqMLYhQBb0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/customers/getbyid/3",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"getbyid",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
