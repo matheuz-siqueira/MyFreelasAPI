@@ -7,225 +7,314 @@
 	},
 	"item": [
 		{
-			"name": "create-account",
-			"event": [
+			"name": "User",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"let password = pm.variables.replaceIn(\"{{$randomPassword}}\")",
-							"let confirmPassword = password",
-							"let email = pm.variables.replaceIn(\"{{$randomEmail}}\")",
-							"",
-							"postman.setGlobalVariable(\"PASSWORD\", password);",
-							"postman.setGlobalVariable(\"CONFIRMPASSWORD\", confirmPassword);",
-							"postman.setGlobalVariable(\"EMAIL\", email);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Validar se a requisição foi feita com sucesso\", function(){",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.jsonBody(\"name\");",
-							"    pm.response.to.be.jsonBody(\"token\");",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"email\": \"{{EMAIL}}\",\n  \"password\": \"{{PASSWORD}}\",\n  \"confirmPassword\": \"{{CONFIRMPASSWORD}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URLBASE}}/api/users/create-account",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"users",
-						"create-account"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"fazer login na API\", function(){",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"    pm.response.to.have.jsonBody(\"name\");",
-							"    pm.response.to.have.jsonBody(\"token\");",
-							"",
-							"    let jsonData = pm.response.json();",
-							"    pm.environment.set(\"TOKEN\", jsonData.token);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\": \"{{EMAIL}}\",\n  \"password\": \"{{PASSWORD}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URLBASE}}/api/authentication/login",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"authentication",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Recuperar perfil do usuário\", function(){",
-							"    pm.response.to.have.status(200);",
-							"    pm.response.to.be.withBody;",
-							"    pm.response.to.be.json;",
-							"    pm.response.to.have.jsonBody(\"id\");",
-							"    pm.response.to.have.jsonBody(\"name\");",
-							"    pm.response.to.have.jsonBody(\"lastName\");",
-							"    pm.response.to.have.jsonBody(\"email\");",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "create-account",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
-							"type": "string"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let password = pm.variables.replaceIn(\"{{$randomPassword}}\")",
+									"let confirmPassword = password",
+									"let email = pm.variables.replaceIn(\"{{$randomEmail}}\")",
+									"",
+									"postman.setGlobalVariable(\"PASSWORD\", password);",
+									"postman.setGlobalVariable(\"CONFIRMPASSWORD\", confirmPassword);",
+									"postman.setGlobalVariable(\"EMAIL\", email);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar se a requisição foi feita com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.jsonBody(\"name\");",
+									"    pm.response.to.be.jsonBody(\"token\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/users/get-profile",
-					"host": [
-						"{{URLBASE}}"
 					],
-					"path": [
-						"api",
-						"users",
-						"get-profile"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"email\": \"{{EMAIL}}\",\n  \"password\": \"{{PASSWORD}}\",\n  \"confirmPassword\": \"{{CONFIRMPASSWORD}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/users/create-account",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"create-account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"fazer login na API\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"name\");",
+									"    pm.response.to.have.jsonBody(\"token\");",
+									"",
+									"    let jsonData = pm.response.json();",
+									"    pm.environment.set(\"TOKEN\", jsonData.token);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{EMAIL}}\",\n  \"password\": \"{{PASSWORD}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/authentication/login",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar perfil do usuário\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"id\");",
+									"    pm.response.to.have.jsonBody(\"name\");",
+									"    pm.response.to.have.jsonBody(\"lastName\");",
+									"    pm.response.to.have.jsonBody(\"email\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/users/get-profile",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"get-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let newPassword = pm.variables.replaceIn(\"{{$ramdomPassword}}\")",
+									"",
+									"postman.setGlobalVariable(\"NEWPASSWORD\", newPassword);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Alterar senha do usuário\", function(){",
+									"    pm.response.to.have.status(204);",
+									"    var newPassword = postman.getGlobalVariable(\"NEWPASSWORD\");",
+									"",
+									"",
+									"    pm.environment.get(\"PASSWORD\", newPassword);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"{{PASSWORD}}\",\n  \"newPassword\": \"{{NEWPASSWORD}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/users/update-password",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"update-password"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "update-password",
-			"event": [
+			"name": "Customer",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"let newPassword = pm.variables.replaceIn(\"{{$ramdomPassword}}\")",
-							"",
-							"postman.setGlobalVariable(\"NEWPASSWORD\", newPassword);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Alterar senha do usuário\", function(){",
-							"    pm.response.to.have.status(204);",
-							"    var newPassword = postman.getGlobalVariable(\"NEWPASSWORD\");",
-							"",
-							"",
-							"    pm.environment.get(\"PASSWORD\", newPassword);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "register-customer",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{TOKEN}}",
-							"type": "string"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var ddd = _.random(10, 99)",
+									"var adicional = _.random(1, 9)",
+									"var primeiros4Digitos = _.random(1000, 9999)",
+									"var ultimos4Digitos = _.random(1000, 9999)",
+									"",
+									"var phoneNumber = ddd + \" \" + adicional + \" \" + primeiros4Digitos + \"-\" + ultimos4Digitos ",
+									"",
+									"pm.environment.set(\"phoneNumber\", phoneNumber)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar sucesso da requisição\", function(){",
+									"    pm.response.to.have.status(201); ",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.have.jsonBody(\"id\");",
+									"    pm.response.to.have.jsonBody(\"name\");",
+									"    pm.response.to.have.jsonBody(\"email\");",
+									"    pm.response.to.have.jsonBody(\"phoneNumber\");",
+									"    pm.response.to.have.jsonBody(\"type\");",
+									"",
+									"})"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"currentPassword\": \"{{PASSWORD}}\",\n  \"newPassword\": \"{{NEWPASSWORD}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URLBASE}}/api/users/update-password",
-					"host": [
-						"{{URLBASE}}"
 					],
-					"path": [
-						"api",
-						"users",
-						"update-password"
-					]
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomFullName}}\",\n  \"type\": 0,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/customers/register-customer",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"register-customer"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [
