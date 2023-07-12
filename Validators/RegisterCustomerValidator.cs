@@ -29,5 +29,7 @@ public class RegisterCustomerValidator : AbstractValidator<RequestRegisterCustom
                 }
             });
         });
+
+        RuleFor(c => c.Type).IsInEnum(); 
     }
 }
