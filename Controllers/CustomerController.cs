@@ -87,4 +87,30 @@ public class CustomerController : ControllerBase
             return BadRequest("Erro de requisição"); 
         }
     }
+
+    /// <summary>
+    /// Obter clientes de um usuário 
+    /// </summary> 
+    /// <remarks> 
+    /// { name: "string" }
+    /// </remarks>
+    /// <params name="request">Nome do cliente</params> 
+    /// <returns>Clientes correspondente com o filtro de pesquisa</returns> 
+    /// <response code="200">Sucesso</response>
+    /// <response code="204">Sucesso</response> 
+    /// <response code="400">Erro</response> 
+    /// <response code="401">Não autenticado</response>
+    
+    [Authorize]
+    [HttpPost("get-all")]
+    public async Task<ActionResult<List<ResponseCustomerJson>>> GetAllAsync(
+        [FromBody] RequestGetCustomersJson request)
+    {   
+        var response = await _service.GetAllAsync(request, User); 
+        if(response is not null)
+        {
+            return Ok(response);
+        }
+        return NoContent();
+    }
 }

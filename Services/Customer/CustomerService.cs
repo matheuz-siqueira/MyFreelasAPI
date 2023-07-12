@@ -1,7 +1,9 @@
+using System.Globalization;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.Customer;
+using myfreelas.Extension;
 using myfreelas.Repositories.Customer;
 
 namespace myfreelas.Services.Customer;
@@ -16,6 +18,15 @@ public class CustomerService : ICustomerService
     {
         _repository = repository; 
         _mapper = mapper; 
+    }
+
+    public async Task<List<ResponseCustomerJson>> GetAllAsync(
+        RequestGetCustomersJson request, ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged); 
+        var customers = await _repository.GetAllAsync(userId);
+        customers = Filter(request, customers);
+        return _mapper.Map<List<ResponseCustomerJson>>(customers); 
     }
 
     public async Task<ResponseCustomerJson> GetByIdAsync(int id, ClaimsPrincipal logged)
@@ -49,5 +60,15 @@ public class CustomerService : ICustomerService
     private int GetCurrentUserId(ClaimsPrincipal logged)
     {
         return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
+    }
+
+    private static List<Models.Customer> Filter(RequestGetCustomersJson request, List<Models.Customer> customers)
+    {
+        var filters = customers;
+        if(!string.IsNullOrWhiteSpace(request.Name))
+        {
+            filters = customers.Where(c => c.Name.CompareWithIgnoreCase(request.Name)).ToList();
+        }
+        return filters.OrderBy(c => c.Name).ToList();
     }
 }

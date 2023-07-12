@@ -13,6 +13,13 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
+    public async Task<List<Models.Customer>> GetAllAsync(int userId)
+    {
+        return await _context.Customers
+            .AsNoTracking()
+                .Where(c => c.UserId == userId).ToListAsync(); 
+    }
+
     public Models.Customer GetByEmail(string email)
     {
         return _context.Customers.AsNoTracking().FirstOrDefault(c => c.Email == email);  
