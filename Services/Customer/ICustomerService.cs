@@ -10,5 +10,7 @@ public interface ICustomerService
     Task<ResponseCustomerJson> GetByIdAsync(int id, ClaimsPrincipal logged);
 
     Task<List<ResponseCustomerJson>> GetAllAsync(
-        RequestGetCustomersJson request, ClaimsPrincipal logged);  
+        RequestGetCustomersJson request, ClaimsPrincipal logged);
+
+    Task DeleteAsync(int customerId, ClaimsPrincipal logged);   
 }

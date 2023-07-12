@@ -13,6 +13,13 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
+    public async Task DeleteAsync(int customerId)
+    {
+        var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId); 
+        _context.Remove(customer); 
+        await _context.SaveChangesAsync();    
+    }
+
     public async Task<List<Models.Customer>> GetAllAsync(int userId)
     {
         return await _context.Customers

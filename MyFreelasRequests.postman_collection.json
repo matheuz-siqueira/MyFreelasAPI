@@ -315,6 +315,67 @@
 					"response": []
 				},
 				{
+					"name": "get-all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar se recuperou dashboard com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"   ",
+									"    let jsonData = pm.response.json()",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\", \"type\");",
+									"",
+									"    pm.environment.set(\"ID_CUSTOMER\", jsonData[0].id);",
+									"",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n \"name\" : \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/customers/get-all",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getbyid",
 					"event": [
 						{
@@ -341,7 +402,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibmFtZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiMSIsImV4cCI6MTY4OTIwNDQ2Mn0.-NsLHAXbWGaqsvd4i-KGmnvcLNLgQDiQbpqMLYhQBb0",
+									"value": "{{TOKEN}}",
 									"type": "string"
 								}
 							]
@@ -355,7 +416,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{URLBASE}}/api/v1/customers/getbyid/3",
+							"raw": "{{URLBASE}}/api/v1/customers/getbyid/{{ID_CUSTOMER}}",
 							"host": [
 								"{{URLBASE}}"
 							],
@@ -364,7 +425,51 @@
 								"v1",
 								"customers",
 								"getbyid",
-								"3"
+								"{{ID_CUSTOMER}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Deletar receita por id com sucesso\", function(){",
+									"    pm.response.to.have.status(204);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/customers/delete-customer/{{ID_CUSTOMER}}",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"delete-customer",
+								"{{ID_CUSTOMER}}"
 							]
 						}
 					},
