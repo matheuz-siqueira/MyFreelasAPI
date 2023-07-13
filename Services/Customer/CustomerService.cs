@@ -62,6 +62,17 @@ public class CustomerService : ICustomerService
         return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 
+    public async Task DeleteAsync(int customerId, ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged); 
+        var customer = await _repository.GetByIdAsync(customerId, userId); 
+        if(customer is null)
+        {
+            throw new BadHttpRequestException("Cliente não encontrado"); 
+        }        
+        await _repository.DeleteAsync(customerId); 
+    }
+
     private static List<Models.Customer> Filter(RequestGetCustomersJson request, List<Models.Customer> customers)
     {
         var filters = customers;

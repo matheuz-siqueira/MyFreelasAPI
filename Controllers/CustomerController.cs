@@ -68,6 +68,7 @@ public class CustomerController : ControllerBase
     /// <response code="401">Não autenticado</response>
     /// <response code="400">Erro na requisição</response> 
     /// <response code="404">Não encontrado</response>  
+      
     [Authorize]
     [HttpGet("getbyid/{id:int}")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> GetByIdAsync(
@@ -112,5 +113,35 @@ public class CustomerController : ControllerBase
             return Ok(response);
         }
         return NoContent();
+    }
+
+
+    /// <summary> 
+    /// Deletar um cliente
+    /// </summary> 
+    /// <params name="id">ID do cliente</params>
+    /// <returns>Nada</returns>
+    /// <response code="204">Sucesso</response>
+    /// <response code="400">Erro</response> 
+    /// <response code="401">Não autenticado</response> 
+    /// <response code="404">Não encontrado</response>  
+
+    [Authorize]
+    [HttpDelete("delete-customer/{id:int}")] 
+    public async Task<ActionResult> DeleteAsync([FromRoute] int id)
+    {
+        try 
+        {
+            await _service.DeleteAsync(id, User); 
+            return NoContent(); 
+        }
+        catch(BadHttpRequestException e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+        catch
+        {
+            return BadRequest("Erro na requisição"); 
+        }
     }
 }
