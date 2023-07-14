@@ -116,6 +116,20 @@ public class CustomerController : ControllerBase
         return NoContent();
     }
 
+
+    /// <summary> 
+    /// Atualizar cliente cadastrado
+    /// </summary>
+    /// <params name="id">ID do cliente</params> 
+    /// <params name="request">Dados do cliente</params> 
+    /// <remarks> 
+    /// {"name":"string","type":0,"email":"string","phoneNumber":"string","otherContact":"string"}
+    /// </remarks>
+    /// <returns>Nada</returns> 
+    /// <response code="204">Sucesso</response>
+    /// <response code="400">Erro</response>
+    /// <response code="404">Cliente não encontrado</response>
+
     [Authorize]
     [HttpPut("update-customer/{id:int}")]
     public async Task<ActionResult> UpdateCustomerAsync(
