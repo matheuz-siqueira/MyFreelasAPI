@@ -432,6 +432,59 @@
 					"response": []
 				},
 				{
+					"name": "update-customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar atualização de clientes com sucesso\", function(){",
+									"    pm.response.to.have.status(204);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomCompanyName}}\",\n  \"type\": 1,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/customers/update-customer/{{ID_CUSTOMER}}",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"update-customer",
+								"{{ID_CUSTOMER}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete-customer",
 					"event": [
 						{

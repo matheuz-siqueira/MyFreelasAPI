@@ -1,10 +1,11 @@
 using System.Text.RegularExpressions;
 using FluentValidation;
+using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 
 namespace myfreelas.Validators;
 
-public class RegisterCustomerValidator : AbstractValidator<RequestRegisterCustomerJson>
+public class RegisterCustomerValidator : AbstractValidator<RequestCustomerJson>
 {
     public RegisterCustomerValidator()
     {

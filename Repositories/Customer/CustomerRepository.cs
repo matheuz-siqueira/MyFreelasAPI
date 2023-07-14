@@ -40,10 +40,21 @@ public class CustomerRepository : ICustomerRepository
                     .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId)
+    {
+        return await _context.Customers.Where(c => c.UserId == userId)
+            .FirstOrDefaultAsync(c => c.Id == customerId); 
+    }
+
     public async Task<Models.Customer> RegistesrCustomerAsync(Models.Customer customer)
     {
         await _context.Customers.AddAsync(customer);
         await _context.SaveChangesAsync();
         return customer; 
+    }
+
+    public async Task UpdateAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }
