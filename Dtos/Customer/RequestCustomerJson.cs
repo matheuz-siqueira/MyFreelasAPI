@@ -1,9 +1,8 @@
-using myfreelas.Models;
 using myfreelas.Models.Enums;
 
-namespace myfreelas.Dtos.Customer;
+namespace myfreelas.Dtos;
 
-public class RequestRegisterCustomerJson
+public class RequestCustomerJson
 {
     public string Name { get; set; }
     public CustomerEnum Type { get; set; }

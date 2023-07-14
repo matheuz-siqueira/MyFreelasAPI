@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.Customer;
@@ -16,10 +17,10 @@ namespace myfreelas.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _service;
-    private readonly IValidator<RequestRegisterCustomerJson> _validatorRegisterCustomer;
+    private readonly IValidator<RequestCustomerJson> _validatorRegisterCustomer;
     public CustomerController(
         [FromServices] ICustomerService service, 
-        [FromServices] IValidator<RequestRegisterCustomerJson> validatorRegisterCustomer)
+        [FromServices] IValidator<RequestCustomerJson> validatorRegisterCustomer)
     {
         _service = service; 
         _validatorRegisterCustomer = validatorRegisterCustomer; 
@@ -40,7 +41,7 @@ public class CustomerController : ControllerBase
     [Authorize]
     [HttpPost("register-customer")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> RegisterCustomerAsync(
-        [FromBody] RequestRegisterCustomerJson request)
+        [FromBody] RequestCustomerJson request)
     {
         var result = _validatorRegisterCustomer.Validate(request); 
         if(!result.IsValid)
@@ -115,6 +116,25 @@ public class CustomerController : ControllerBase
         return NoContent();
     }
 
+    [Authorize]
+    [HttpPut("update-customer/{id:int}")]
+    public async Task<ActionResult> UpdateCustomerAsync(
+        [FromRoute] int id, [FromBody] RequestCustomerJson request)
+    {
+        try
+        {
+            await _service.UpdateCustomerAsync(request, id, User); 
+            return NoContent();
+        }
+        catch(BadHttpRequestException e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+        catch
+        {
+            return BadRequest("Erro na requisição");
+        }
+    }
 
     /// <summary> 
     /// Deletar um cliente
@@ -144,4 +164,6 @@ public class CustomerController : ControllerBase
             return BadRequest("Erro na requisição"); 
         }
     }
+
+
 }

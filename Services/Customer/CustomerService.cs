@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Extension;
 using myfreelas.Repositories.Customer;
@@ -41,7 +42,7 @@ public class CustomerService : ICustomerService
     }
 
     public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
-        RequestRegisterCustomerJson request, ClaimsPrincipal logged)
+        RequestCustomerJson request, ClaimsPrincipal logged)
     {
         var exists = _repository.GetByEmail(request.Email);
         if(exists is not null)
@@ -57,11 +58,18 @@ public class CustomerService : ICustomerService
         return response; 
     }
 
-    private int GetCurrentUserId(ClaimsPrincipal logged)
+    public async Task UpdateCustomerAsync(
+        RequestCustomerJson request, int customerId, ClaimsPrincipal logged)
     {
-        return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = GetCurrentUserId(logged);
+        var customer = await _repository.GetByIdUpdateAsync(customerId, userId); 
+        if(customer is null)
+        {
+            throw new BadHttpRequestException("Cliente não encontrado");
+        }
+        _mapper.Map(request, customer);
+        await _repository.UpdateAsync();  
     }
-
     public async Task DeleteAsync(int customerId, ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged); 
@@ -73,6 +81,10 @@ public class CustomerService : ICustomerService
         await _repository.DeleteAsync(customerId); 
     }
 
+    private int GetCurrentUserId(ClaimsPrincipal logged)
+    {
+        return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
+    }
     private static List<Models.Customer> Filter(RequestGetCustomersJson request, List<Models.Customer> customers)
     {
         var filters = customers;
@@ -82,4 +94,5 @@ public class CustomerService : ICustomerService
         }
         return filters.OrderBy(c => c.Name).ToList();
     }
+    
 }

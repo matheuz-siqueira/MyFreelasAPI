@@ -9,4 +9,6 @@ public interface ICustomerRepository
     Task<Models.Customer> GetByIdAsync(int id, int userId);
     Task<List<Models.Customer>> GetAllAsync(int userId); 
     Task DeleteAsync(int customerId); 
+    Task UpdateAsync();
+    Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId);
 }
