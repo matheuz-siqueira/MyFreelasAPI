@@ -1,4 +1,5 @@
 using AutoMapper;
+using HashidsNet;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Dtos.User;
@@ -8,8 +9,11 @@ namespace myfreelas.Mapper;
 
 public class MappingProfile : Profile
 {
-    public MappingProfile()
+    private readonly IHashids _hashids;
+    public MappingProfile(IHashids hashids)
     {
+        _hashids = hashids;
+
         RequestToEntity();
         EntityToResponse();
         EntityToRequest();
@@ -27,8 +31,14 @@ public class MappingProfile : Profile
         CreateMap<User, ResponseRegisterUserJson>(); 
         CreateMap<User, ResponseAuthenticationJson>();
         CreateMap<User, ResponseProfileJson>();
-        CreateMap<Customer, ResponseRegisterCustomerJson>();
-        CreateMap<Customer, ResponseCustomerJson>();
+        
+        CreateMap<Customer, ResponseRegisterCustomerJson>()
+            .ForMember(destiny => destiny.Id, config => config
+            .MapFrom(source => _hashids.Encode(source.Id)));
+        
+        CreateMap<Customer, ResponseCustomerJson>()
+            .ForMember(destiny => destiny.Id, config => config
+            .MapFrom(source => _hashids.Encode(source.Id)));
     }
 
     private void EntityToRequest()
