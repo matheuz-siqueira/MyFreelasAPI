@@ -17,6 +17,7 @@ using myfreelas.Repositories.Customer;
 using myfreelas.Services.Customer;
 using myfreelas.Dtos.Customer;
 using myfreelas.Dtos;
+using HashidsNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,8 +41,14 @@ builder.Services.AddDbContext<Context>(
 );
 
 builder.Services.AddScoped(provider => new AutoMapper.MapperConfiguration(cfg => {
-    cfg.AddProfile(new MappingProfile());
+    cfg.AddProfile(new MappingProfile(provider.GetService<IHashids>()));
 }).CreateMapper());
+
+builder.Services.AddHashids(setup => 
+{
+    setup.Salt = builder.Configuration["HashIds:Salt"];
+    setup.MinHashLength = 3;
+});
 
 //Configurações para usar Autenticação com JWT
 var JWTKey = Encoding.ASCII.GetBytes(builder.Configuration["JWTKey"]);
