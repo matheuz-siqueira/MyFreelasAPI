@@ -40,15 +40,15 @@ builder.Services.AddDbContext<Context>(
     )
 );
 
+
+builder.Services.AddScoped<IHashids>(_ =>
+    new Hashids(builder.Configuration.GetValue<string>("HashIds:Salt"), 3)
+);
+
 builder.Services.AddScoped(provider => new AutoMapper.MapperConfiguration(cfg => {
     cfg.AddProfile(new MappingProfile(provider.GetService<IHashids>()));
 }).CreateMapper());
 
-builder.Services.AddHashids(setup => 
-{
-    setup.Salt = builder.Configuration["HashIds:Salt"];
-    setup.MinHashLength = 3;
-});
 
 //Configurações para usar Autenticação com JWT
 var JWTKey = Encoding.ASCII.GetBytes(builder.Configuration["JWTKey"]);

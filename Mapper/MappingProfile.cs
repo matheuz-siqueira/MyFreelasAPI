@@ -9,11 +9,10 @@ namespace myfreelas.Mapper;
 
 public class MappingProfile : Profile
 {
-    private readonly IHashids _hashids;
+    private readonly IHashids _hashids; 
     public MappingProfile(IHashids hashids)
-    {
+    { 
         _hashids = hashids;
-
         RequestToEntity();
         EntityToResponse();
         EntityToRequest();
@@ -33,12 +32,12 @@ public class MappingProfile : Profile
         CreateMap<User, ResponseProfileJson>();
         
         CreateMap<Customer, ResponseRegisterCustomerJson>()
-            .ForMember(destiny => destiny.Id, config => config
-            .MapFrom(source => _hashids.Encode(source.Id)));
+            .ForMember(d => d.Id, cfg => cfg 
+            .MapFrom(s => _hashids.Encode(s.Id)));
         
         CreateMap<Customer, ResponseCustomerJson>()
-            .ForMember(destiny => destiny.Id, config => config
-            .MapFrom(source => _hashids.Encode(source.Id)));
+            .ForMember(d => d.Id, cfg => cfg 
+            .MapFrom(s => _hashids.Encode(s.Id)));
     }
 
     private void EntityToRequest()
