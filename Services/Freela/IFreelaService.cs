@@ -7,4 +7,7 @@ public interface IFreelaService
 {
     Task<ResponseFreelaJson> RegisterFreelaAsync(ClaimsPrincipal logged,
         RequestRegisterFreelaJson request); 
+
+    Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, 
+        RequestGetFreelaJson request); 
 }

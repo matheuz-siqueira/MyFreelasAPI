@@ -9,6 +9,7 @@ namespace myfreelas.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/freelas")]
+[Produces("application/json")]
 [ApiConventionType(typeof(DefaultApiConventions))]
 
 public class FreelaController : ControllerBase
@@ -52,6 +53,32 @@ public class FreelaController : ControllerBase
         catch(BadHttpRequestException e)
         {
             return NotFound(new { message = e.Message });
+        }
+    }
+
+    /// <summary> 
+    /// Obter dashboard de projetos cadastrados
+    /// </summary> 
+    /// <remarks> 
+    /// { name: "string" }
+    /// </remarks>
+    /// <params name="request">Filtro de pesquisa</params> 
+    /// <returns>Lista de projetos cadastrados</returns> 
+    /// <response code="200">Sucesso</response> 
+    /// <response code="500">Erro interno</response> 
+    [Authorize]
+    [HttpPost("get-all")]
+    public async Task<ActionResult<List<ResponseAllFreelasJson>>> GetAllAsync(
+        [FromBody] RequestGetFreelaJson request) 
+    {
+        try 
+        {
+            var response = await _service.GetAllAsync(User, request); 
+            return Ok(response); 
+        }
+        catch
+        {
+            return BadRequest("Erro na requisição"); 
         }
     }
 }

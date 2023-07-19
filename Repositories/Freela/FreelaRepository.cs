@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
 
 namespace myfreelas.Repositories.Freela;
@@ -9,6 +10,14 @@ public class FreelaRepository : IFreelaRepository
     {
         _context = context; 
     }
+
+    public async Task<List<Models.Freela>> GetAllAsync(int userId)
+    {
+        return await _context.Freelas
+            .AsNoTracking()
+                .Where(f => f.UserId == userId).ToListAsync();
+    }
+
     public async Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela)
     {
         await _context.AddAsync(freela); 
