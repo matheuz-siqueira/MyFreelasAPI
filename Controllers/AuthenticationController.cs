@@ -1,5 +1,4 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Authentication;
 using myfreelas.Dtos.User;
