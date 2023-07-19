@@ -2,6 +2,7 @@ using AutoMapper;
 using HashidsNet;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
+using myfreelas.Dtos.Freela;
 using myfreelas.Dtos.User;
 using myfreelas.Models;
 
@@ -23,6 +24,10 @@ public class MappingProfile : Profile
         CreateMap<RequestRegisterUserJson, User>(); 
         CreateMap<RequestAuthenticationJson, User>();
         CreateMap<RequestCustomerJson, Customer>(); 
+
+        CreateMap<RequestRegisterFreelaJson, Freela>()
+            .ForMember(d => d.CustomerId, cfg => cfg
+            .MapFrom(s => _hashids.DecodeSingle(s.CustomerId)));
     }
 
     private void EntityToResponse()
@@ -37,6 +42,10 @@ public class MappingProfile : Profile
         
         CreateMap<Customer, ResponseCustomerJson>()
             .ForMember(d => d.Id, cfg => cfg 
+            .MapFrom(s => _hashids.Encode(s.Id)));
+
+        CreateMap<Freela, ResponseFreelaJson>()
+            .ForMember(d => d.Id, cfg => cfg
             .MapFrom(s => _hashids.Encode(s.Id)));
     }
 

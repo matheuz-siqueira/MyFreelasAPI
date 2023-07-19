@@ -12,7 +12,6 @@ public class Freela
     [Column(TypeName = "varchar(120)")]
     public string Name { get; set; }
 
-    [Required]
     [Column(TypeName = "text")]
     public string Description { get; set; }
 

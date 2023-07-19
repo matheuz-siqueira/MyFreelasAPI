@@ -18,6 +18,9 @@ using myfreelas.Services.Customer;
 using myfreelas.Dtos.Customer;
 using myfreelas.Dtos;
 using HashidsNet;
+using myfreelas.Repositories.Freela;
+using myfreelas.Services.Freela;
+using myfreelas.Dtos.Freela;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +34,9 @@ builder.Services.AddScoped<IValidator<RequestUpdatePasswordJson>, UpdatePassword
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>(); 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IValidator<RequestCustomerJson>, RegisterCustomerValidator>();
+builder.Services.AddScoped<IFreelaRepository, FreelaRepository>();
+builder.Services.AddScoped<IFreelaService, FreelaService>();
+builder.Services.AddScoped<IValidator<RequestRegisterFreelaJson>, RegisterFreelaValidator>();
 
 
 builder.Services.AddDbContext<Context>(
