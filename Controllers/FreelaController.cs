@@ -16,11 +16,14 @@ public class FreelaController : ControllerBase
 {
     private readonly IFreelaService _service;
     private readonly IValidator<RequestRegisterFreelaJson> _validatorRegisterFreela;
+    private readonly IValidator<RequestUpdateFreelaJson> _validatorUpdateFreela;
     public FreelaController(IFreelaService service, 
-        IValidator<RequestRegisterFreelaJson> validatorRegisterFreela)
+        IValidator<RequestRegisterFreelaJson> validatorRegisterFreela,
+        IValidator<RequestUpdateFreelaJson> validatorUpdateFreela)
     {
         _service = service; 
-        _validatorRegisterFreela = validatorRegisterFreela; 
+        _validatorRegisterFreela = validatorRegisterFreela;
+        _validatorUpdateFreela = validatorUpdateFreela;  
     }     
 
     /// <summary> 
@@ -82,6 +85,45 @@ public class FreelaController : ControllerBase
         }
     }
 
+
+    /// <summary> 
+    /// Editar projeto cadastrado
+    /// </summary> 
+    /// <remarks> 
+    /// {"name":"string","description":"string","value":0,"startDate":"2023-07-17T03:47:45.391Z","finishDate":"2023-07-17T03:47:45.391Z" }
+    /// </remarks> 
+    /// <params name="fHashId">ID do projeto</params> 
+    /// <params name="request">Dados para atualizar</params> 
+    /// <returns>Nada</returns> 
+    /// <response code="204">Sucesso</response> 
+    /// <response code="400">Erro na requisição</response>
+    /// <response code="401">Não autenticado</response>
+    /// <response code="404">Não encontrado</response>
+
+    [Authorize]
+    [HttpPut("update-freela/{fHashId}")]
+    public async Task<ActionResult> UpdateAsync(
+        [FromRoute] string fHashId, [FromBody] RequestUpdateFreelaJson request)
+    {
+        var result = _validatorUpdateFreela.Validate(request); 
+        if(!result.IsValid)
+        {
+            return BadRequest(result.Errors.ToCustomValidationFailure());
+        }
+        try 
+        {
+            await _service.UpdateAsync(User, fHashId, request);
+            return NoContent(); 
+        }
+        catch(BadHttpRequestException e)
+        {
+            return BadRequest(new { message = e.Message });
+        }
+        catch(Exception e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+    }
 
     /// <summary> 
     /// Obter projeto pelo ID

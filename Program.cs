@@ -37,6 +37,7 @@ builder.Services.AddScoped<IValidator<RequestCustomerJson>, RegisterCustomerVali
 builder.Services.AddScoped<IFreelaRepository, FreelaRepository>();
 builder.Services.AddScoped<IFreelaService, FreelaService>();
 builder.Services.AddScoped<IValidator<RequestRegisterFreelaJson>, RegisterFreelaValidator>();
+builder.Services.AddScoped<IValidator<RequestUpdateFreelaJson>, UpdateFreelaValidator>();
 
 
 builder.Services.AddDbContext<Context>(

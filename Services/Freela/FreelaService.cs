@@ -88,6 +88,25 @@ public class FreelaService : IFreelaService
         }
         await _freelaRpository.DeleteAsync(freela); 
     }
+    public async Task UpdateAsync(ClaimsPrincipal logged, string fHashId, 
+        RequestUpdateFreelaJson request)
+    {
+        var userId = GetCurrentUserId(logged); 
+        var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
+        if(!isHash)
+        {
+            throw new BadHttpRequestException("ID do projeto inválido"); 
+        }
+        var freelaId = _hashids.DecodeSingle(fHashId); 
+        var freela = await _freelaRpository.GetByIdUpdateAsync(userId, freelaId); 
+        if(freela is null)
+        {
+            throw new Exception("Projeto não encontrado"); 
+        } 
+        _mapper.Map(request, freela); 
+        await _freelaRpository.UpdateAsync(); 
+
+    }
 
     private int GetCurrentUserId(ClaimsPrincipal logged) 
     {

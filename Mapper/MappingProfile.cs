@@ -29,6 +29,8 @@ public class MappingProfile : Profile
             .ForMember(d => d.CustomerId, cfg => cfg
             .MapFrom(s => _hashids.DecodeSingle(s.CustomerId)));
 
+        CreateMap<RequestUpdateFreelaJson, Freela>(); 
+
     }
 
     private void EntityToResponse()
@@ -51,7 +53,9 @@ public class MappingProfile : Profile
 
         CreateMap<Freela, ResponseAllFreelasJson>()
             .ForMember(d => d.Id, cfg => cfg
-            .MapFrom(s => _hashids.Encode(s.Id))); 
+            .MapFrom(s => _hashids.Encode(s.Id)))
+            .ForMember(d => d.CustomerId, cfg => cfg 
+            .MapFrom(s => _hashids.Encode(s.CustomerId))); 
     }
 
     private void EntityToRequest()

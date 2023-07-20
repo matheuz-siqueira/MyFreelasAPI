@@ -32,10 +32,23 @@ public class FreelaRepository : IFreelaRepository
                 .Where(f => f.UserId == userId).FirstOrDefaultAsync(f => f.Id == freelaId);
     }
 
+    public async Task<Models.Freela> GetByIdUpdateAsync(int userId, int freelaId)
+    {
+        return await _context.Freelas
+            .Where(f => f.UserId == userId)
+                .FirstOrDefaultAsync(f => f.Id == freelaId);
+    }
+
     public async Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela)
     {
         await _context.AddAsync(freela); 
         await _context.SaveChangesAsync();
         return freela;
+    }
+
+    public async Task UpdateAsync()
+    {
+        await _context.SaveChangesAsync();
+
     }
 }
