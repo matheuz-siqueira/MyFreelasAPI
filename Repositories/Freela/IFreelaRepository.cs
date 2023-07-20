@@ -8,4 +8,7 @@ public interface IFreelaRepository
 
     Task<Models.Freela> GetByIdAsync(int userId, int freelaId);
     Task DeleteAsync(Models.Freela freela); 
+
+    Task <Models.Freela> GetByIdUpdateAsync(int userId, int freelaId);
+    Task UpdateAsync(); 
 }

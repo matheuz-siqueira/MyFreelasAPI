@@ -15,4 +15,7 @@ public interface IFreelaService
     Task<ResponseFreelaJson> GetByIdAsync(ClaimsPrincipal logged, string fHashId);  
 
     Task DeleteAsync(ClaimsPrincipal logged, string fHashId); 
+
+    Task UpdateAsync(ClaimsPrincipal logged, string fHashId, 
+        RequestUpdateFreelaJson request);
 }
