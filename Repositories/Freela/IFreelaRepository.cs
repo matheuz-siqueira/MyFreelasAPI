@@ -7,4 +7,5 @@ public interface IFreelaRepository
     Task<List<Models.Freela>> GetAllAsync(int userId);
 
     Task<Models.Freela> GetByIdAsync(int userId, int freelaId);
+    Task DeleteAsync(Models.Freela freela); 
 }
