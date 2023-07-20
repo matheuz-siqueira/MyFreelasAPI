@@ -81,4 +81,34 @@ public class FreelaController : ControllerBase
             return BadRequest("Erro na requisição"); 
         }
     }
+
+
+    /// <summary> 
+    /// Obter projeto pelo ID
+    /// </summary> 
+    /// <params name="fHashId">ID do projeto</params> 
+    /// <returns>Projeto com ID correspondente</returns> 
+    /// <response code="200">Sucesso</response> 
+    /// <response code="400">Erro na requisição</response> 
+    /// <response code="404">Não encontrado</response> 
+    /// <response code="401">Não autenticado</response> 
+    [Authorize]
+    [HttpGet("get-by-id/{fHashId}")]
+    public async Task<ActionResult<ResponseFreelaJson>> GetByIdAsync(
+        [FromRoute] string fHashId)
+    {
+        try 
+        {
+            var response = await _service.GetByIdAsync(User, fHashId); 
+            return Ok(response); 
+        }
+        catch(BadHttpRequestException e)
+        {
+            return BadRequest(new { message = e.Message });
+        }
+        catch(SystemException e)
+        {
+            return NotFound(new { message = e.Message });
+        }
+    }
 }

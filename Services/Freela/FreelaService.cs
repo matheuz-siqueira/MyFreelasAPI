@@ -10,7 +10,7 @@ namespace myfreelas.Services.Freela;
 
 public class FreelaService : IFreelaService
 {   
-    private readonly IFreelaRepository _freelarRpository;
+    private readonly IFreelaRepository _freelaRpository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IMapper _mapper;
     private readonly IHashids _hashids;
@@ -20,16 +20,33 @@ public class FreelaService : IFreelaService
         IMapper mapper, 
         IHashids hashids)
     {
-        _freelarRpository = freelaRepository;
+        _freelaRpository = freelaRepository;
         _customerRepository = customerRepository;
         _mapper = mapper;
         _hashids = hashids;   
+    }
+    public async Task<ResponseFreelaJson> GetByIdAsync(
+        ClaimsPrincipal logged, string fHashId)
+    {
+        var userId = GetCurrentUserId(logged); 
+        var isHash = _hashids.TryDecodeSingle(fHashId, out int number);
+        if (!isHash)
+        {
+            throw new BadHttpRequestException("ID do projeto inválido"); 
+        }  
+        var freelaId = _hashids.DecodeSingle(fHashId); 
+        var freela = await _freelaRpository.GetByIdAsync(userId, freelaId); 
+        if(freela is null)
+        {
+            throw new SystemException("Projeto não encontrado"); 
+        }
+        return _mapper.Map<ResponseFreelaJson>(freela); 
     }
 
     public async Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, RequestGetFreelaJson request)
     {
         var userId = GetCurrentUserId(logged); 
-        var freelas = await _freelarRpository.GetAllAsync(userId); 
+        var freelas = await _freelaRpository.GetAllAsync(userId); 
         var filters = Filter(request, freelas); 
         return _mapper.Map<List<ResponseAllFreelasJson>>(filters); 
 
@@ -52,7 +69,7 @@ public class FreelaService : IFreelaService
         }
         var freela = _mapper.Map<Models.Freela>(request);
         freela.UserId = userId; 
-        await _freelarRpository.RegisterFreelaAsync(freela); 
+        await _freelaRpository.RegisterFreelaAsync(freela); 
         return _mapper.Map<ResponseFreelaJson>(freela); 
     }
 
