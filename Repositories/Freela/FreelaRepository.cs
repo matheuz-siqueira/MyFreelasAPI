@@ -18,6 +18,13 @@ public class FreelaRepository : IFreelaRepository
                 .Where(f => f.UserId == userId).ToListAsync();
     }
 
+    public async Task<Models.Freela> GetByIdAsync(int userId, int freelaId)
+    {
+        return await _context.Freelas
+            .AsNoTracking()
+                .Where(f => f.UserId == userId).FirstOrDefaultAsync(f => f.Id == freelaId);
+    }
+
     public async Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela)
     {
         await _context.AddAsync(freela); 

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using HashidsNet;
 using myfreelas.Dtos.Freela;
 
 namespace myfreelas.Services.Freela;
@@ -10,4 +11,6 @@ public interface IFreelaService
 
     Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, 
         RequestGetFreelaJson request); 
+
+    Task<ResponseFreelaJson> GetByIdAsync(ClaimsPrincipal logged, string fHashId);  
 }
