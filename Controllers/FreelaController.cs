@@ -57,7 +57,7 @@ public class FreelaController : ControllerBase
     }
 
     /// <summary> 
-    /// Obter dashboard de projetos cadastrados
+    /// Obter Lista de projetos cadastrados
     /// </summary> 
     /// <remarks> 
     /// { name: "string" }
@@ -110,5 +110,33 @@ public class FreelaController : ControllerBase
         {
             return NotFound(new { message = e.Message });
         }
+    }
+
+    /// <summary> 
+    /// Deletar projeto pelo ID
+    /// </summary> 
+    /// <params name="fHashId">ID do projeto</params> 
+    /// <returns>Nada</returns> 
+    /// <response code="204">Sucesso</response> 
+    /// <response code="400">Erro na requisição</response>
+    /// <response code="401">Não autenticado</response> 
+    /// <response code="404">Não encontrado</response>  
+    [Authorize]
+    [HttpDelete("delete-freela/{fHashId}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] string fHashId)
+    {
+        try 
+        {
+            await _service.DeleteAsync(User, fHashId); 
+            return NoContent();
+        }
+        catch(BadHttpRequestException e)
+        {
+            return BadRequest(new { message = e.Message }); 
+        }
+        catch(Exception e)
+        {
+            return NotFound(new { message = e.Message }); 
+        } 
     }
 }

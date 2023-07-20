@@ -72,6 +72,22 @@ public class FreelaService : IFreelaService
         await _freelaRpository.RegisterFreelaAsync(freela); 
         return _mapper.Map<ResponseFreelaJson>(freela); 
     }
+    public async Task DeleteAsync(ClaimsPrincipal logged, string fHashId)
+    {
+        var userId = GetCurrentUserId(logged);
+        var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
+        if(!isHash)
+        {
+            throw new BadHttpRequestException("ID do projeto inválido"); 
+        } 
+        var freelaId = _hashids.DecodeSingle(fHashId); 
+        var freela = await _freelaRpository.GetByIdAsync(userId, freelaId);  
+        if(freela is null)
+        {
+            throw new Exception("Projeto não encontrado"); 
+        }
+        await _freelaRpository.DeleteAsync(freela); 
+    }
 
     private int GetCurrentUserId(ClaimsPrincipal logged) 
     {

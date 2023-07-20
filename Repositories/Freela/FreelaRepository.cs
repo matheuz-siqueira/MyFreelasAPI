@@ -11,6 +11,13 @@ public class FreelaRepository : IFreelaRepository
         _context = context; 
     }
 
+    public async Task DeleteAsync(Models.Freela freela)
+    {
+        _context.Remove(freela); 
+        await _context.SaveChangesAsync();
+         
+    }
+
     public async Task<List<Models.Freela>> GetAllAsync(int userId)
     {
         return await _context.Freelas
