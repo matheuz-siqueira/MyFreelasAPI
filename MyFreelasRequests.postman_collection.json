@@ -36,6 +36,9 @@
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.jsonBody(\"name\");",
 									"    pm.response.to.be.jsonBody(\"token\");",
+									"",
+									"    let jsonData = pm.response.json();",
+									"    pm.environment.set(\"TOKEN\", jsonData.token);",
 									"})"
 								],
 								"type": "text/javascript"
@@ -83,8 +86,7 @@
 									"    pm.response.to.have.jsonBody(\"name\");",
 									"    pm.response.to.have.jsonBody(\"token\");",
 									"",
-									"    let jsonData = pm.response.json();",
-									"    pm.environment.set(\"TOKEN\", jsonData.token);",
+									"    ",
 									"})"
 								],
 								"type": "text/javascript"
@@ -253,7 +255,8 @@
 									"",
 									"var phoneNumber = ddd + \" \" + adicional + \" \" + primeiros4Digitos + \"-\" + ultimos4Digitos ",
 									"",
-									"pm.environment.set(\"phoneNumber\", phoneNumber)"
+									"pm.environment.set(\"phoneNumber\", phoneNumber)",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -265,11 +268,15 @@
 									"pm.test(\"Validar sucesso da requisição\", function(){",
 									"    pm.response.to.have.status(201); ",
 									"    pm.response.to.be.withBody;",
-									"    pm.response.to.have.jsonBody(\"id\");",
-									"    pm.response.to.have.jsonBody(\"name\");",
-									"    pm.response.to.have.jsonBody(\"email\");",
-									"    pm.response.to.have.jsonBody(\"phoneNumber\");",
-									"    pm.response.to.have.jsonBody(\"type\");",
+									"    pm.response.to.json;",
+									"    pm.response.to.be.jsonBody(\"id\");",
+									"    pm.response.to.be.jsonBody(\"name\");",
+									"    pm.response.to.be.jsonBody(\"email\");",
+									"    pm.response.to.be.jsonBody(\"phoneNumber\");",
+									"    pm.response.to.be.jsonBody(\"type\");",
+									"",
+									"    let jsonData = pm.response.json(); ",
+									"    pm.variables.set(\"IDCUSTOMER\", jsonData.id); ",
 									"",
 									"})"
 								],
@@ -292,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomFullName}}\",\n  \"type\": 0,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"\"\n}",
+							"raw": "{\n  \"name\": \"{{$randomCompanyName}}\",\n  \"type\": 0,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"{{$randomUrl}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -321,7 +328,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Validar se recuperou dashboard com sucesso\", function(){",
+									"pm.test(\"Validar se recuperou dashboard com sucesso\", function () {",
+									"pm.variables.get(\"variable_key\");",
 									"    pm.response.to.have.status(200);",
 									"    pm.response.to.be.withBody;",
 									"    pm.response.to.be.json;",
@@ -329,8 +337,6 @@
 									"    let jsonData = pm.response.json()",
 									"    pm.expect(jsonData).to.be.an(\"array\");",
 									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\", \"type\");",
-									"",
-									"    pm.environment.set(\"ID_CUSTOMER\", jsonData[0].id);",
 									"",
 									"})"
 								],
@@ -416,7 +422,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{URLBASE}}/api/v1/customers/getbyid/{{ID_CUSTOMER}}",
+							"raw": "{{URLBASE}}/api/v1/customers/getbyid/{{IDCUSTOMER}}",
 							"host": [
 								"{{URLBASE}}"
 							],
@@ -425,7 +431,7 @@
 								"v1",
 								"customers",
 								"getbyid",
-								"{{ID_CUSTOMER}}"
+								"{{IDCUSTOMER}}"
 							]
 						}
 					},
@@ -461,7 +467,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomCompanyName}}\",\n  \"type\": 1,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"\"\n}",
+							"raw": "{\n  \"name\": \"{{$randomCompanyName}}\",\n  \"type\": 1,\n  \"email\": \"{{$randomEmail}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"otherContact\": \"{{$randomUrl}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -469,7 +475,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{URLBASE}}/api/v1/customers/update-customer/{{ID_CUSTOMER}}",
+							"raw": "{{URLBASE}}/api/v1/customers/update-customer/{{IDCUSTOMER}}",
 							"host": [
 								"{{URLBASE}}"
 							],
@@ -478,7 +484,7 @@
 								"v1",
 								"customers",
 								"update-customer",
-								"{{ID_CUSTOMER}}"
+								"{{IDCUSTOMER}}"
 							]
 						}
 					},
@@ -491,7 +497,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Deletar receita por id com sucesso\", function(){",
+									"pm.test(\"Deletar projeto por id com sucesso\", function(){",
 									"    pm.response.to.have.status(204);",
 									"})"
 								],
@@ -513,7 +519,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{URLBASE}}/api/v1/customers/delete-customer/{{ID_CUSTOMER}}",
+							"raw": "{{URLBASE}}/api/v1/customers/delete-customer/{{IDCUSTOMER}}",
 							"host": [
 								"{{URLBASE}}"
 							],
@@ -522,7 +528,281 @@
 								"v1",
 								"customers",
 								"delete-customer",
-								"{{ID_CUSTOMER}}"
+								"{{IDCUSTOMER}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Freela",
+			"item": [
+				{
+					"name": "register-freela",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar requisição registrar projeto com sucesso\", function(){",
+									"    pm.response.to.have.status(201); ",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.jsonBody(\"id\");",
+									"    pm.response.to.be.jsonBody(\"name\");",
+									"    pm.response.to.be.jsonBody(\"description\");",
+									"    pm.response.to.be.jsonBody(\"value\"); ",
+									"",
+									"    let jsonData = pm.response.json(); ",
+									"    pm.environment.set(\"IDFREELA\", jsonData.id);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"value\": 2000,\n  \"startDate\": \"2023-07-21T13:40:13.063Z\",\n  \"finishDate\": \"2023-11-21T13:40:13.063Z\",\n  \"customerId\": \"{{IDCUSTOMER}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/freelas/register-freela",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"freelas",
+								"register-freela"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar recuperar todos os clientes com sucesso\", function(){",
+									"pm.variables.get(\"variables_key\");",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    let jsonData = pm.response.json(); ",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"description\", \"value\", \"customerId\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/freelas/get-all",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"freelas",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar recuperar freela por id com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"",
+									"    pm.response.to.be.jsonBody(\"id\");",
+									"    pm.response.to.be.jsonBody(\"name\");",
+									"    pm.response.to.be.jsonBody(\"description\");",
+									"    pm.response.to.be.jsonBody(\"value\");",
+									"    pm.response.to.be.jsonBody(\"startDate\");",
+									"    pm.response.to.be.jsonBody(\"finishDate\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/freelas/get-by-id/{{IDFREELA}}",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"freelas",
+								"get-by-id",
+								"{{IDFREELA}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-freela",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar atualizar freela com sucesso\", function(){",
+									"    pm.response.to.have.status(204);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"value\": 1,\n  \"startDate\": \"2023-07-21T14:09:47.176Z\",\n  \"finishDate\": \"2023-11-11T14:09:47.176Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/freelas/update-freela/{{IDFREELA}}",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"freelas",
+								"update-freela",
+								"{{IDFREELA}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-freela",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar recuperar freela por id com sucesso\", function(){",
+									"    pm.response.to.have.status(204);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/freelas/delete-freela/{{IDFREELA}}",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"freelas",
+								"delete-freela",
+								"{{IDFREELA}}"
 							]
 						}
 					},
