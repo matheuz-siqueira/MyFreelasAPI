@@ -30,11 +30,7 @@ public class FreelaService : IFreelaService
         ClaimsPrincipal logged, string fHashId)
     {
         var userId = GetCurrentUserId(logged); 
-        var isHash = _hashids.TryDecodeSingle(fHashId, out int number);
-        if (!isHash)
-        {
-            throw new InvalidIDException("ID do projeto inválido"); 
-        }  
+        IsHash(fHashId);  
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdAsync(userId, freelaId); 
         if(freela is null)
@@ -76,11 +72,7 @@ public class FreelaService : IFreelaService
     public async Task DeleteAsync(ClaimsPrincipal logged, string fHashId)
     {
         var userId = GetCurrentUserId(logged);
-        var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
-        if(!isHash)
-        {
-            throw new InvalidIDException("ID do projeto inválido"); 
-        } 
+        IsHash(fHashId);  
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdAsync(userId, freelaId);  
         if(freela is null)
@@ -93,11 +85,7 @@ public class FreelaService : IFreelaService
         RequestUpdateFreelaJson request)
     {
         var userId = GetCurrentUserId(logged); 
-        var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
-        if(!isHash)
-        {
-            throw new InvalidIDException("ID do projeto inválido"); 
-        }
+        IsHash(fHashId); 
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdUpdateAsync(userId, freelaId); 
         if(freela is null)
@@ -114,6 +102,14 @@ public class FreelaService : IFreelaService
         return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
     }
 
+    private void IsHash(string hashid)
+    {
+        var isHash = _hashids.TryDecodeSingle(hashid, out int id);
+        if(!isHash)
+        {
+            throw new InvalidIDException("ID do projeto inválido");
+        }
+    }
     private static List<Models.Freela> Filter(RequestGetFreelaJson request, List<Models.Freela> freelas)
     {
         var filters = freelas;
