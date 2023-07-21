@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.User;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.User;
 
@@ -54,9 +55,13 @@ public class UserController : ControllerBase
             var response = await _service.RegisterUserAsync(request);
             return Ok(response);
         }
-        catch(BadHttpRequestException e)
+        catch(UserAlreadyExistsException e)
         {
-            return BadRequest(new { message = e.Message} );
+            return BadRequest(new { message = e.Message });
+        }
+        catch(DifferentPasswordsException e)
+        {
+            return BadRequest(new { message = e.Message });
         }
     }
 
@@ -101,7 +106,7 @@ public class UserController : ControllerBase
             await _service.UpdatePasswordAsync(request, User); 
             return NoContent();
         }
-        catch(Exception e)
+        catch(IncorretPasswordException e)
         {
             return BadRequest(new { message = e.Message });
         }

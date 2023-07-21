@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.Freela;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.Freela;
 
@@ -53,9 +54,13 @@ public class FreelaController : ControllerBase
             var response = await _service.RegisterFreelaAsync(User, request); 
             return StatusCode(201, response); 
         }
-        catch(BadHttpRequestException e)
+        catch(CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
+        }
+        catch(InvalidIDException e)
+        {
+            return BadRequest(new { message = e.Message });
         }
     }
 
@@ -67,7 +72,8 @@ public class FreelaController : ControllerBase
     /// </remarks>
     /// <params name="request">Filtro de pesquisa</params> 
     /// <returns>Lista de projetos cadastrados</returns> 
-    /// <response code="200">Sucesso</response> 
+    /// <response code="200">Sucesso</response>
+    /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
     [Authorize]
     [HttpPost("get-all")]
@@ -77,7 +83,11 @@ public class FreelaController : ControllerBase
         try 
         {
             var response = await _service.GetAllAsync(User, request); 
-            return Ok(response); 
+            if(response.Any())
+            {
+                return Ok(response);
+            } 
+            return NoContent(); 
         }
         catch
         {
@@ -115,11 +125,11 @@ public class FreelaController : ControllerBase
             await _service.UpdateAsync(User, fHashId, request);
             return NoContent(); 
         }
-        catch(BadHttpRequestException e)
+        catch(InvalidIDException e)
         {
             return BadRequest(new { message = e.Message });
         }
-        catch(Exception e)
+        catch(ProjectNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -144,11 +154,11 @@ public class FreelaController : ControllerBase
             var response = await _service.GetByIdAsync(User, fHashId); 
             return Ok(response); 
         }
-        catch(BadHttpRequestException e)
+        catch(InvalidIDException e)
         {
             return BadRequest(new { message = e.Message });
         }
-        catch(SystemException e)
+        catch(ProjectNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -172,11 +182,11 @@ public class FreelaController : ControllerBase
             await _service.DeleteAsync(User, fHashId); 
             return NoContent();
         }
-        catch(BadHttpRequestException e)
+        catch(ProjectNotFoundException e)
         {
             return BadRequest(new { message = e.Message }); 
         }
-        catch(Exception e)
+        catch(InvalidIDException e)
         {
             return NotFound(new { message = e.Message }); 
         } 

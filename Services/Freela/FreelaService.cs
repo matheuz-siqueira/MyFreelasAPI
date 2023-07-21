@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using HashidsNet;
 using myfreelas.Dtos.Freela;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Extension;
 using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Freela;
@@ -32,13 +33,13 @@ public class FreelaService : IFreelaService
         var isHash = _hashids.TryDecodeSingle(fHashId, out int number);
         if (!isHash)
         {
-            throw new BadHttpRequestException("ID do projeto inválido"); 
+            throw new InvalidIDException("ID do projeto inválido"); 
         }  
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdAsync(userId, freelaId); 
         if(freela is null)
         {
-            throw new SystemException("Projeto não encontrado"); 
+            throw new ProjectNotFoundException("Projeto não encontrado"); 
         }
         return _mapper.Map<ResponseFreelaJson>(freela); 
     }
@@ -59,13 +60,13 @@ public class FreelaService : IFreelaService
         var isHash = _hashids.TryDecodeSingle(request.CustomerId, out int number); 
         if(!isHash)
         {
-            throw new BadHttpRequestException("ID de cliente inválido"); 
+            throw new InvalidIDException("ID de cliente inválido"); 
         }
         var customerId = _hashids.DecodeSingle(request.CustomerId);
         var customer = await _customerRepository.GetByIdAsync(customerId, userId);
         if(customer is null)
         {
-            throw new BadHttpRequestException("Cliente não encontrado"); 
+            throw new CustomerNotFoundException("Cliente não encontrado"); 
         }
         var freela = _mapper.Map<Models.Freela>(request);
         freela.UserId = userId; 
@@ -78,13 +79,13 @@ public class FreelaService : IFreelaService
         var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
         if(!isHash)
         {
-            throw new BadHttpRequestException("ID do projeto inválido"); 
+            throw new InvalidIDException("ID do projeto inválido"); 
         } 
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdAsync(userId, freelaId);  
         if(freela is null)
         {
-            throw new Exception("Projeto não encontrado"); 
+            throw new ProjectNotFoundException("Projeto não encontrado"); 
         }
         await _freelaRpository.DeleteAsync(freela); 
     }
@@ -95,13 +96,13 @@ public class FreelaService : IFreelaService
         var isHash = _hashids.TryDecodeSingle(fHashId, out int number); 
         if(!isHash)
         {
-            throw new BadHttpRequestException("ID do projeto inválido"); 
+            throw new InvalidIDException("ID do projeto inválido"); 
         }
         var freelaId = _hashids.DecodeSingle(fHashId); 
         var freela = await _freelaRpository.GetByIdUpdateAsync(userId, freelaId); 
         if(freela is null)
         {
-            throw new Exception("Projeto não encontrado"); 
+            throw new ProjectNotFoundException("Projeto não encontrado"); 
         } 
         _mapper.Map(request, freela); 
         await _freelaRpository.UpdateAsync(); 
