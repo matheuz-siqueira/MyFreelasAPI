@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.Customer;
 
@@ -53,7 +54,7 @@ public class CustomerController : ControllerBase
             var response = await _service.RegisterCustomerAsync(request, User); 
             return StatusCode(201, response); 
         }
-        catch(BadHttpRequestException e)
+        catch(CustomerAlreadyExistsException e)
         {
             return BadRequest(new {message = e.Message} );
         }
@@ -80,7 +81,7 @@ public class CustomerController : ControllerBase
             var response = await _service.GetByIdAsync(id, User); 
             return Ok(response); 
         }
-        catch(BadHttpRequestException e)
+        catch(CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -140,7 +141,7 @@ public class CustomerController : ControllerBase
             await _service.UpdateCustomerAsync(request, id, User); 
             return NoContent();
         }
-        catch(BadHttpRequestException e)
+        catch(CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -169,7 +170,7 @@ public class CustomerController : ControllerBase
             await _service.DeleteAsync(id, User); 
             return NoContent(); 
         }
-        catch(BadHttpRequestException e)
+        catch(CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }

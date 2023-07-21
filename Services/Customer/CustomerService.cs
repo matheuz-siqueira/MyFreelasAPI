@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Extension;
 using myfreelas.Repositories.Customer;
 
@@ -36,7 +37,7 @@ public class CustomerService : ICustomerService
         var customer = await _repository.GetByIdAsync(id, userId); 
         if(customer is null)
         {
-            throw new BadHttpRequestException("Cliente não encontrado");
+            throw new CustomerNotFoundException("Cliente não encontrado");
         }
         return _mapper.Map<ResponseCustomerJson>(customer); 
     }
@@ -47,7 +48,7 @@ public class CustomerService : ICustomerService
         var exists = _repository.GetByEmail(request.Email);
         if(exists is not null)
         {
-            throw new BadHttpRequestException("Cliente já cadastrado"); 
+            throw new CustomerAlreadyExistsException("Cliente já cadastrado"); 
         }
 
         var customer = _mapper.Map<Models.Customer>(request); 
@@ -65,7 +66,7 @@ public class CustomerService : ICustomerService
         var customer = await _repository.GetByIdUpdateAsync(customerId, userId); 
         if(customer is null)
         {
-            throw new BadHttpRequestException("Cliente não encontrado");
+            throw new CustomerNotFoundException("Cliente não encontrado");
         }
         _mapper.Map(request, customer);
         await _repository.UpdateAsync();  
@@ -76,7 +77,7 @@ public class CustomerService : ICustomerService
         var customer = await _repository.GetByIdAsync(customerId, userId); 
         if(customer is null)
         {
-            throw new BadHttpRequestException("Cliente não encontrado"); 
+            throw new CustomerNotFoundException("Cliente não encontrado"); 
         }        
         await _repository.DeleteAsync(customerId); 
     }

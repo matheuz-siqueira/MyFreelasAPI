@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Authentication;
 using myfreelas.Dtos.User;
+using myfreelas.Exceptions.BaseException;
 using myfreelas.Repositories.User;
 
 namespace myfreelas.Services.User;
@@ -38,12 +39,12 @@ public class UserService : IUserService
         var exists = _repository.GetByEmail(request.Email);
         if(exists is not null)
         {
-            throw new BadHttpRequestException("Usuário já cadastrado"); 
+            throw new UserAlreadyExistsException("Usuário já cadastrado"); 
         }
 
         if(request.Password != request.ConfirmPassword)
         {
-            throw new BadHttpRequestException("Senhas diferentes"); 
+            throw new DifferentPasswordsException("Senhas diferentes"); 
         }
 
         var user = _mapper.Map<Models.User>(request); 
@@ -60,7 +61,7 @@ public class UserService : IUserService
         var user = await _repository.GetByIdAsync(id); 
         if(!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
         {
-            throw new Exception("Senha incorreta"); 
+            throw new IncorretPasswordException("Senha incorreta"); 
         }
 
         user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
