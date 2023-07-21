@@ -58,7 +58,7 @@ public class CustomerController : MyFreelasController
 
 
     /// <summary> 
-    /// Obter cliente pelo Id
+    /// Obter cliente pelo ID e projetos associados
     /// </summary>
     /// <params name="id">ID do cliente</params> 
     /// <returns>Cliente correspondente ao ID</returns> 
@@ -102,7 +102,7 @@ public class CustomerController : MyFreelasController
     
     
     [HttpPost("get-all")]
-    public async Task<ActionResult<List<ResponseCustomerJson>>> GetAllAsync(
+    public async Task<ActionResult<List<ResponseAllCustomerJson>>> GetAllAsync(
         [FromBody] RequestGetCustomersJson request)
     {   
         var response = await _service.GetAllAsync(request, User); 

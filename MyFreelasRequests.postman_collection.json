@@ -336,7 +336,7 @@
 									"   ",
 									"    let jsonData = pm.response.json()",
 									"    pm.expect(jsonData).to.be.an(\"array\");",
-									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\", \"type\");",
+									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\");",
 									"",
 									"})"
 								],

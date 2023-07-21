@@ -37,6 +37,7 @@ public class CustomerRepository : ICustomerRepository
         return await _context.Customers
             .AsNoTracking()
                 .Where(c => c.UserId == userId)
+                    .Include(c => c.Freelas) 
                     .FirstOrDefaultAsync(c => c.Id == id);
     }
 

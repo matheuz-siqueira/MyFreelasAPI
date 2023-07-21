@@ -10,7 +10,7 @@ public interface ICustomerService
         RequestCustomerJson request, ClaimsPrincipal logged);
     Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId);
 
-    Task<List<ResponseCustomerJson>> GetAllAsync(
+    Task<List<ResponseAllCustomerJson>> GetAllAsync(
         RequestGetCustomersJson request, ClaimsPrincipal logged);
 
     Task DeleteAsync(ClaimsPrincipal logged, string cHashId);   

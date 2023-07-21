@@ -26,13 +26,13 @@ public class CustomerService : ICustomerService
         _hashids = hashids; 
     }
 
-    public async Task<List<ResponseCustomerJson>> GetAllAsync(
+    public async Task<List<ResponseAllCustomerJson>> GetAllAsync(
         RequestGetCustomersJson request, ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged); 
         var customers = await _repository.GetAllAsync(userId);
         customers = Filter(request, customers);
-        return _mapper.Map<List<ResponseCustomerJson>>(customers); 
+        return _mapper.Map<List<ResponseAllCustomerJson>>(customers); 
     }
 
     public async Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId)

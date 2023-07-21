@@ -47,6 +47,10 @@ public class MappingProfile : Profile
             .ForMember(d => d.Id, cfg => cfg 
             .MapFrom(s => _hashids.Encode(s.Id)));
 
+        CreateMap<Customer, ResponseAllCustomerJson>()
+            .ForMember(d => d.Id, cfg => cfg 
+            .MapFrom(s => _hashids.Encode(s.Id)));
+            
         CreateMap<Freela, ResponseFreelaJson>()
             .ForMember(d => d.Id, cfg => cfg
             .MapFrom(s => _hashids.Encode(s.Id)));
