@@ -38,11 +38,7 @@ public class CustomerService : ICustomerService
     public async Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId)
     {
         var userId = GetCurrentUserId(logged);
-        var isHash = _hashids.TryDecodeSingle(cHashId, out int number); 
-        if(!isHash)
-        {
-            throw new InvalidIDException("ID do cliente inválido");
-        }
+        IsHash(cHashId);
         var customerId = _hashids.DecodeSingle(cHashId); 
         var customer = await _repository.GetByIdAsync(customerId, userId); 
         if(customer is null)
@@ -73,11 +69,7 @@ public class CustomerService : ICustomerService
         ClaimsPrincipal logged, RequestCustomerJson request, string cHashId)
     {
         var userId = GetCurrentUserId(logged);
-        var isHash = _hashids.TryDecodeSingle(cHashId, out int number);
-        if(!isHash)
-        {
-            throw new InvalidIDException("ID do cliente inválido");
-        }
+        IsHash(cHashId);
         var customerId = _hashids.DecodeSingle(cHashId); 
         var customer = await _repository.GetByIdUpdateAsync(customerId, userId); 
         if(customer is null)
@@ -90,11 +82,7 @@ public class CustomerService : ICustomerService
     public async Task DeleteAsync(ClaimsPrincipal logged, string cHashId)
     {
         var userId = GetCurrentUserId(logged); 
-        var isHash = _hashids.TryDecodeSingle(cHashId, out int number); 
-        if(!isHash)
-        {
-            throw new InvalidIDException("ID do cliente inválido"); 
-        }
+        IsHash(cHashId);
         var customerId = _hashids.DecodeSingle(cHashId);
         var customer = await _repository.GetByIdAsync(customerId, userId); 
         if(customer is null)
@@ -107,6 +95,14 @@ public class CustomerService : ICustomerService
     private int GetCurrentUserId(ClaimsPrincipal logged)
     {
         return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
+    }
+    private void IsHash(string hashid)
+    {
+        var isHash = _hashids.TryDecodeSingle(hashid, out int id);
+        if(!isHash)
+        {
+            throw new InvalidIDException("ID do cliente inválido");
+        }
     }
     private static List<Models.Customer> Filter(RequestGetCustomersJson request, List<Models.Customer> customers)
     {

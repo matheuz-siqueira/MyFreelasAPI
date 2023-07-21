@@ -170,9 +170,13 @@ public class CustomerController : MyFreelasController
         {
             return NotFound(new { message = e.Message });
         }
+        catch(InvalidIDException e)
+        {
+            return BadRequest(new { message = e.Message }); 
+        }
         catch
         {
-            return BadRequest("Erro na requisição"); 
+            return BadRequest("Erro na requisição");
         }
     }
 }
