@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Authentication;
 using myfreelas.Dtos.User;
@@ -6,12 +7,9 @@ using myfreelas.Exceptions.ErrorsValidators;
 
 namespace myfreelas.Controllers;
 
-[ApiController]
-[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/authentication")]
-[Produces("application/json")]
-[ApiConventionType(typeof(DefaultApiConventions))]
-public class AuthenticationController : ControllerBase
+
+public class AuthenticationController : MyFreelasController
 {
     private readonly ILoginService _service;
     private readonly IValidator<RequestAuthenticationJson> _validator;
@@ -33,6 +31,8 @@ public class AuthenticationController : ControllerBase
     /// <returns>Token</returns>
     /// <response code="200">Sucesso</response> 
     /// <response code="400">Erro</response>
+
+    [AllowAnonymous]
     [HttpPost("login")]
     public ActionResult<ResponseAuthenticationJson> Login
         ([FromBody] RequestAuthenticationJson request)
