@@ -63,7 +63,6 @@ namespace myfreelas.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("FinishDate")
@@ -132,7 +131,7 @@ namespace myfreelas.Migrations
             modelBuilder.Entity("myfreelas.Models.Freela", b =>
                 {
                     b.HasOne("myfreelas.Models.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("Freelas")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -146,6 +145,11 @@ namespace myfreelas.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("myfreelas.Models.Customer", b =>
+                {
+                    b.Navigation("Freelas");
                 });
 
             modelBuilder.Entity("myfreelas.Models.User", b =>

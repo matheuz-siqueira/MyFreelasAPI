@@ -1,3 +1,4 @@
+using myfreelas.Dtos.Freela;
 using myfreelas.Models.Enums;
 
 namespace myfreelas.Dtos.Customer;
@@ -8,4 +9,5 @@ public class ResponseCustomerJson
     public string Name { get; set; }    
     public string Email { get; set; }
     public CustomerEnum Type { get; set; }
+    public List<ResponseFreelaJson> Freelas { get; set; }
 }

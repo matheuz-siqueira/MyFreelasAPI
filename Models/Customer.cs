@@ -27,6 +27,8 @@ public class Customer
     [Column(TypeName = "varchar(150)")]
     public string OtherContact { get; set; }
 
+    public List<Freela> Freelas { get; set; }
+
     //Navigation property
     public User User { get; set; }
     public int UserId { get; set; }
