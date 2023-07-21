@@ -72,22 +72,22 @@ public class CustomerController : ControllerBase
     /// <response code="404">Não encontrado</response>  
       
     [Authorize]
-    [HttpGet("getbyid/{id:int}")]
-    public async Task<ActionResult<ResponseRegisterCustomerJson>> GetByIdAsync(
-        [FromRoute] int id) 
+    [HttpGet("getbyid/{cHashId}")]
+    public async Task<ActionResult<ResponseCustomerJson>> GetByIdAsync(
+        [FromRoute] string cHashId) 
     {
         try 
         {
-            var response = await _service.GetByIdAsync(id, User); 
-            return Ok(response); 
+            var response = await _service.GetByIdAsync(User, cHashId); 
+            return Ok(response);
         }
         catch(CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
-        catch
+        catch(InvalidIDException e)
         {
-            return BadRequest("Erro de requisição"); 
+            return BadRequest(new { message = e.Message }); 
         }
     }
 
@@ -132,13 +132,13 @@ public class CustomerController : ControllerBase
     /// <response code="404">Cliente não encontrado</response>
 
     [Authorize]
-    [HttpPut("update-customer/{id:int}")]
+    [HttpPut("update-customer/{cHashId}")]
     public async Task<ActionResult> UpdateCustomerAsync(
-        [FromRoute] int id, [FromBody] RequestCustomerJson request)
+        [FromRoute] string cHashId, [FromBody] RequestCustomerJson request)
     {
         try
         {
-            await _service.UpdateCustomerAsync(request, id, User); 
+            await _service.UpdateCustomerAsync(User, request, cHashId); 
             return NoContent();
         }
         catch(CustomerNotFoundException e)
@@ -162,12 +162,12 @@ public class CustomerController : ControllerBase
     /// <response code="404">Não encontrado</response>  
 
     [Authorize]
-    [HttpDelete("delete-customer/{id:int}")] 
-    public async Task<ActionResult> DeleteAsync([FromRoute] int id)
+    [HttpDelete("delete-customer/{cHashId}")] 
+    public async Task<ActionResult> DeleteAsync([FromRoute] string cHashId)
     {
         try 
         {
-            await _service.DeleteAsync(id, User); 
+            await _service.DeleteAsync(User, cHashId); 
             return NoContent(); 
         }
         catch(CustomerNotFoundException e)

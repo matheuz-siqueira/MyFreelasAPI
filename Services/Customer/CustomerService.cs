@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Claims;
 using AutoMapper;
+using HashidsNet;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
@@ -13,13 +14,16 @@ namespace myfreelas.Services.Customer;
 public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _repository;
+    private readonly IHashids _hashids;
     private readonly IMapper _mapper;
     public CustomerService(
         [FromServices] ICustomerRepository repository,
-        [FromServices] IMapper mapper)
+        [FromServices] IMapper mapper, 
+        [FromServices] IHashids hashids)
     {
         _repository = repository; 
         _mapper = mapper; 
+        _hashids = hashids; 
     }
 
     public async Task<List<ResponseCustomerJson>> GetAllAsync(
@@ -31,10 +35,16 @@ public class CustomerService : ICustomerService
         return _mapper.Map<List<ResponseCustomerJson>>(customers); 
     }
 
-    public async Task<ResponseCustomerJson> GetByIdAsync(int id, ClaimsPrincipal logged)
+    public async Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId)
     {
         var userId = GetCurrentUserId(logged);
-        var customer = await _repository.GetByIdAsync(id, userId); 
+        var isHash = _hashids.TryDecodeSingle(cHashId, out int number); 
+        if(!isHash)
+        {
+            throw new InvalidIDException("ID do cliente inválido");
+        }
+        var customerId = _hashids.DecodeSingle(cHashId); 
+        var customer = await _repository.GetByIdAsync(customerId, userId); 
         if(customer is null)
         {
             throw new CustomerNotFoundException("Cliente não encontrado");
@@ -60,9 +70,15 @@ public class CustomerService : ICustomerService
     }
 
     public async Task UpdateCustomerAsync(
-        RequestCustomerJson request, int customerId, ClaimsPrincipal logged)
+        ClaimsPrincipal logged, RequestCustomerJson request, string cHashId)
     {
         var userId = GetCurrentUserId(logged);
+        var isHash = _hashids.TryDecodeSingle(cHashId, out int number);
+        if(!isHash)
+        {
+            throw new InvalidIDException("ID do cliente inválido");
+        }
+        var customerId = _hashids.DecodeSingle(cHashId); 
         var customer = await _repository.GetByIdUpdateAsync(customerId, userId); 
         if(customer is null)
         {
@@ -71,9 +87,15 @@ public class CustomerService : ICustomerService
         _mapper.Map(request, customer);
         await _repository.UpdateAsync();  
     }
-    public async Task DeleteAsync(int customerId, ClaimsPrincipal logged)
+    public async Task DeleteAsync(ClaimsPrincipal logged, string cHashId)
     {
         var userId = GetCurrentUserId(logged); 
+        var isHash = _hashids.TryDecodeSingle(cHashId, out int number); 
+        if(!isHash)
+        {
+            throw new InvalidIDException("ID do cliente inválido"); 
+        }
+        var customerId = _hashids.DecodeSingle(cHashId);
         var customer = await _repository.GetByIdAsync(customerId, userId); 
         if(customer is null)
         {
