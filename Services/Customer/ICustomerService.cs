@@ -8,13 +8,13 @@ public interface ICustomerService
 {
     Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
         RequestCustomerJson request, ClaimsPrincipal logged);
-    Task<ResponseCustomerJson> GetByIdAsync(int id, ClaimsPrincipal logged);
+    Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId);
 
     Task<List<ResponseCustomerJson>> GetAllAsync(
         RequestGetCustomersJson request, ClaimsPrincipal logged);
 
-    Task DeleteAsync(int customerId, ClaimsPrincipal logged);   
+    Task DeleteAsync(ClaimsPrincipal logged, string cHashId);   
 
     Task UpdateCustomerAsync(
-        RequestCustomerJson request, int customerId, ClaimsPrincipal logged);
+        ClaimsPrincipal logged, RequestCustomerJson request, string cHashId);
 }
