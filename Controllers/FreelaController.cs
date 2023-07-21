@@ -5,15 +5,11 @@ using myfreelas.Dtos.Freela;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.Freela;
-
 namespace myfreelas.Controllers;
-[ApiController]
-[ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/freelas")]
-[Produces("application/json")]
-[ApiConventionType(typeof(DefaultApiConventions))]
 
-public class FreelaController : ControllerBase
+[Route("api/v{version:apiVersion}/freelas")]
+
+public class FreelaController : MyFreelasController
 {
     private readonly IFreelaService _service;
     private readonly IValidator<RequestRegisterFreelaJson> _validatorRegisterFreela;
@@ -39,7 +35,7 @@ public class FreelaController : ControllerBase
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response> 
 
-    [Authorize]
+    
     [HttpPost("register-freela")]
     public async Task<ActionResult<ResponseFreelaJson>> RegisterFreelaAsync(
         [FromBody] RequestRegisterFreelaJson request)
@@ -75,7 +71,7 @@ public class FreelaController : ControllerBase
     /// <response code="200">Sucesso</response>
     /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
-    [Authorize]
+    
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllFreelasJson>>> GetAllAsync(
         [FromBody] RequestGetFreelaJson request) 
@@ -110,7 +106,7 @@ public class FreelaController : ControllerBase
     /// <response code="401">Não autenticado</response>
     /// <response code="404">Não encontrado</response>
 
-    [Authorize]
+    
     [HttpPut("update-freela/{fHashId}")]
     public async Task<ActionResult> UpdateAsync(
         [FromRoute] string fHashId, [FromBody] RequestUpdateFreelaJson request)
@@ -144,7 +140,7 @@ public class FreelaController : ControllerBase
     /// <response code="400">Erro na requisição</response> 
     /// <response code="404">Não encontrado</response> 
     /// <response code="401">Não autenticado</response> 
-    [Authorize]
+    
     [HttpGet("get-by-id/{fHashId}")]
     public async Task<ActionResult<ResponseFreelaJson>> GetByIdAsync(
         [FromRoute] string fHashId)
@@ -173,7 +169,7 @@ public class FreelaController : ControllerBase
     /// <response code="400">Erro na requisição</response>
     /// <response code="401">Não autenticado</response> 
     /// <response code="404">Não encontrado</response>  
-    [Authorize]
+    
     [HttpDelete("delete-freela/{fHashId}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] string fHashId)
     {

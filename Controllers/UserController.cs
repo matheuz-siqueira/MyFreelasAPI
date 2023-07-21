@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.User;
@@ -9,12 +8,9 @@ using myfreelas.Services.User;
 
 namespace myfreelas.Controllers;
 
-[ApiController]
-[ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/users")]
-[Produces("application/json")]
-[ApiConventionType(typeof(DefaultApiConventions))]
-public class UserController : ControllerBase
+
+public class UserController : MyFreelasController
 {
     private readonly IUserService _service;
     private readonly IValidator<RequestRegisterUserJson> _validatorRegisterUser; 
@@ -40,6 +36,7 @@ public class UserController : ControllerBase
     /// <returns>Usuário recém cadastrado</returns>
     /// <response code="201">Sucesso</response>
     /// <response code="400">Erro na requisição</response>
+    [AllowAnonymous]
     [HttpPost("create-account")]
     public async Task<ActionResult<ResponseAuthenticationJson>> PostUser(
         [FromBody] RequestRegisterUserJson request) 
@@ -71,7 +68,7 @@ public class UserController : ControllerBase
     /// <returns>Perfil</returns>
     /// <response code="200">Sucesso</response>
     /// <response code="401">Não autenticado</response>
-    [Authorize]  
+      
     [HttpGet("get-profile")]
     public async Task<ActionResult<ResponseProfileJson>> GetProfile()
     {
@@ -91,7 +88,7 @@ public class UserController : ControllerBase
     /// <response code="204">Sucesso</response> 
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response> 
-    [Authorize]
+    
     [HttpPut("update-password")]
     public async Task<ActionResult> UpdatePassword(
         [FromBody] RequestUpdatePasswordJson request)

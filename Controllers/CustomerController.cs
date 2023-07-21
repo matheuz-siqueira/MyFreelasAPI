@@ -9,13 +9,9 @@ using myfreelas.Services.Customer;
 
 namespace myfreelas.Controllers;
 
-[ApiController]
-[ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/customers")]
-[Produces("application/json")]
-[ApiConventionType(typeof(DefaultApiConventions))]
 
-public class CustomerController : ControllerBase
+[Route("api/v{version:apiVersion}/customers")]
+public class CustomerController : MyFreelasController
 {
     private readonly ICustomerService _service;
     private readonly IValidator<RequestCustomerJson> _validatorRegisterCustomer;
@@ -39,7 +35,7 @@ public class CustomerController : ControllerBase
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response>
 
-    [Authorize]
+    
     [HttpPost("register-customer")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> RegisterCustomerAsync(
         [FromBody] RequestCustomerJson request)
@@ -71,7 +67,7 @@ public class CustomerController : ControllerBase
     /// <response code="400">Erro na requisição</response> 
     /// <response code="404">Não encontrado</response>  
       
-    [Authorize]
+    
     [HttpGet("getbyid/{cHashId}")]
     public async Task<ActionResult<ResponseCustomerJson>> GetByIdAsync(
         [FromRoute] string cHashId) 
@@ -104,7 +100,7 @@ public class CustomerController : ControllerBase
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response>
     
-    [Authorize]
+    
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseCustomerJson>>> GetAllAsync(
         [FromBody] RequestGetCustomersJson request)
@@ -131,7 +127,7 @@ public class CustomerController : ControllerBase
     /// <response code="400">Erro</response>
     /// <response code="404">Cliente não encontrado</response>
 
-    [Authorize]
+    
     [HttpPut("update-customer/{cHashId}")]
     public async Task<ActionResult> UpdateCustomerAsync(
         [FromRoute] string cHashId, [FromBody] RequestCustomerJson request)
@@ -161,7 +157,7 @@ public class CustomerController : ControllerBase
     /// <response code="401">Não autenticado</response> 
     /// <response code="404">Não encontrado</response>  
 
-    [Authorize]
+    
     [HttpDelete("delete-customer/{cHashId}")] 
     public async Task<ActionResult> DeleteAsync([FromRoute] string cHashId)
     {
@@ -179,6 +175,4 @@ public class CustomerController : ControllerBase
             return BadRequest("Erro na requisição"); 
         }
     }
-
-
 }
