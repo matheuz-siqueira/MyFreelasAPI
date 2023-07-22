@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.Freela;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
+using myfreelas.Pagination;
 using myfreelas.Services.Freela;
 namespace myfreelas.Controllers;
 
@@ -74,11 +75,12 @@ public class FreelaController : MyFreelasController
     
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllFreelasJson>>> GetAllAsync(
+        [FromQuery] PaginationParameters paginationParameters,
         [FromBody] RequestGetFreelaJson request) 
     {
         try 
         {
-            var response = await _service.GetAllAsync(User, request); 
+            var response = await _service.GetAllAsync(User, request, paginationParameters); 
             if(response.Any())
             {
                 return Ok(response);

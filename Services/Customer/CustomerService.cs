@@ -28,7 +28,7 @@ public class CustomerService : ICustomerService
     }
 
     public async Task<List<ResponseAllCustomerJson>> GetAllAsync(
-        CustomerParameters customerParameters,
+        PaginationParameters customerParameters,
         RequestGetCustomersJson request, ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged); 

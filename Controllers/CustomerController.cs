@@ -103,10 +103,14 @@ public class CustomerController : MyFreelasController
     
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllCustomerJson>>> GetAllAsync(
-        [FromQuery] CustomerParameters customerParameters, 
+        [FromQuery] PaginationParameters customerParameters, 
         [FromBody] RequestGetCustomersJson request)
     {   
         var response = await _service.GetAllAsync(customerParameters, request, User);
+        if(!response.Any())
+        {
+            return NoContent();
+        }
         return Ok(response);
     }
 

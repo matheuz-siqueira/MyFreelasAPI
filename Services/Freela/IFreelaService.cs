@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using HashidsNet;
 using myfreelas.Dtos.Freela;
+using myfreelas.Pagination;
 
 namespace myfreelas.Services.Freela;
 
@@ -10,7 +11,7 @@ public interface IFreelaService
         RequestRegisterFreelaJson request); 
 
     Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, 
-        RequestGetFreelaJson request); 
+        RequestGetFreelaJson request, PaginationParameters paginationParameters); 
 
     Task<ResponseFreelaJson> GetByIdAsync(ClaimsPrincipal logged, string fHashId);  
 
