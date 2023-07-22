@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
 using myfreelas.Dtos.Customer;
+using myfreelas.Pagination;
 
 namespace myfreelas.Repositories.Customer;
 
@@ -20,11 +21,13 @@ public class CustomerRepository : ICustomerRepository
         await _context.SaveChangesAsync();    
     }
 
-    public async Task<List<Models.Customer>> GetAllAsync(int userId)
+    public async Task<List<Models.Customer>> GetAllAsync(int userId, CustomerParameters customerParameters)
     {
         return await _context.Customers
-            .AsNoTracking()
-                .Where(c => c.UserId == userId).ToListAsync(); 
+            .AsNoTracking().Where(c => c.UserId == userId)
+            .Skip((customerParameters.PageNumber -1) * customerParameters.PageSize)
+            .Take(customerParameters.PageSize)
+            .ToListAsync();  
     }
 
     public Models.Customer GetByEmail(string email)

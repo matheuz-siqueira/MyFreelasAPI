@@ -7,6 +7,7 @@ using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Extension;
+using myfreelas.Pagination;
 using myfreelas.Repositories.Customer;
 
 namespace myfreelas.Services.Customer;
@@ -27,12 +28,14 @@ public class CustomerService : ICustomerService
     }
 
     public async Task<List<ResponseAllCustomerJson>> GetAllAsync(
+        CustomerParameters customerParameters,
         RequestGetCustomersJson request, ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged); 
-        var customers = await _repository.GetAllAsync(userId);
+        var customers = await _repository.GetAllAsync(userId, customerParameters);
         customers = Filter(request, customers);
         return _mapper.Map<List<ResponseAllCustomerJson>>(customers); 
+    
     }
 
     public async Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId)

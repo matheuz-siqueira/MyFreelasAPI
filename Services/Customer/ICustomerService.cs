@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
+using myfreelas.Pagination;
 
 namespace myfreelas.Services.Customer;
 
@@ -11,6 +12,7 @@ public interface ICustomerService
     Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId);
 
     Task<List<ResponseAllCustomerJson>> GetAllAsync(
+        CustomerParameters customerParameters, 
         RequestGetCustomersJson request, ClaimsPrincipal logged);
 
     Task DeleteAsync(ClaimsPrincipal logged, string cHashId);   
