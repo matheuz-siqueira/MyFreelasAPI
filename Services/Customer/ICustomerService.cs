@@ -12,7 +12,7 @@ public interface ICustomerService
     Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId);
 
     Task<List<ResponseAllCustomerJson>> GetAllAsync(
-        CustomerParameters customerParameters, 
+        PaginationParameters customerParameters, 
         RequestGetCustomersJson request, ClaimsPrincipal logged);
 
     Task DeleteAsync(ClaimsPrincipal logged, string cHashId);   

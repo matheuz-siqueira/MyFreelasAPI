@@ -1,10 +1,12 @@
+using myfreelas.Pagination;
+
 namespace myfreelas.Repositories.Freela;
 
 public interface IFreelaRepository
 {
     Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela); 
 
-    Task<List<Models.Freela>> GetAllAsync(int userId);
+    Task<List<Models.Freela>> GetAllAsync(int userId, PaginationParameters paginationParameters);
 
     Task<Models.Freela> GetByIdAsync(int userId, int freelaId);
     Task DeleteAsync(Models.Freela freela); 

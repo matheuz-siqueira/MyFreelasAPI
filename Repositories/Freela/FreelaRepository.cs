@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
+using myfreelas.Pagination;
 
 namespace myfreelas.Repositories.Freela;
 
@@ -18,11 +19,13 @@ public class FreelaRepository : IFreelaRepository
          
     }
 
-    public async Task<List<Models.Freela>> GetAllAsync(int userId)
+    public async Task<List<Models.Freela>> GetAllAsync(int userId, PaginationParameters paginationParameters)
     {
         return await _context.Freelas
-            .AsNoTracking()
-                .Where(f => f.UserId == userId).ToListAsync();
+            .AsNoTracking().Where(f => f.UserId == userId)
+            .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
+            .Take(paginationParameters.PageSize)
+            .ToListAsync();
     }
 
     public async Task<Models.Freela> GetByIdAsync(int userId, int freelaId)

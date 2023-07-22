@@ -9,7 +9,7 @@ public interface ICustomerRepository
     Models.Customer GetByEmail(string email);
     Task<Models.Customer> GetByIdAsync(int id, int userId);
     Task<List<Models.Customer>> GetAllAsync(int userId, 
-        CustomerParameters customerParameters); 
+        PaginationParameters customerParameters); 
     Task DeleteAsync(int customerId); 
     Task UpdateAsync();
     Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId);

@@ -21,7 +21,7 @@ public class CustomerRepository : ICustomerRepository
         await _context.SaveChangesAsync();    
     }
 
-    public async Task<List<Models.Customer>> GetAllAsync(int userId, CustomerParameters customerParameters)
+    public async Task<List<Models.Customer>> GetAllAsync(int userId, PaginationParameters customerParameters)
     {
         return await _context.Customers
             .AsNoTracking().Where(c => c.UserId == userId)

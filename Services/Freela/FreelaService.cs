@@ -4,6 +4,7 @@ using HashidsNet;
 using myfreelas.Dtos.Freela;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Extension;
+using myfreelas.Pagination;
 using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Freela;
 
@@ -40,10 +41,11 @@ public class FreelaService : IFreelaService
         return _mapper.Map<ResponseFreelaJson>(freela); 
     }
 
-    public async Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, RequestGetFreelaJson request)
+    public async Task<List<ResponseAllFreelasJson>> GetAllAsync(ClaimsPrincipal logged, 
+    RequestGetFreelaJson request, PaginationParameters paginationParameters)
     {
         var userId = GetCurrentUserId(logged); 
-        var freelas = await _freelaRpository.GetAllAsync(userId); 
+        var freelas = await _freelaRpository.GetAllAsync(userId, paginationParameters); 
         var filters = Filter(request, freelas); 
         return _mapper.Map<List<ResponseAllFreelasJson>>(filters); 
 
