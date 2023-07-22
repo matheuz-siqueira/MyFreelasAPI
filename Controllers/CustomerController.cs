@@ -1,10 +1,10 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Exceptions.ErrorsValidators;
+using myfreelas.Pagination;
 using myfreelas.Services.Customer;
 
 namespace myfreelas.Controllers;
@@ -103,16 +103,12 @@ public class CustomerController : MyFreelasController
     
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllCustomerJson>>> GetAllAsync(
+        [FromQuery] CustomerParameters customerParameters, 
         [FromBody] RequestGetCustomersJson request)
     {   
-        var response = await _service.GetAllAsync(request, User); 
-        if(response is not null)
-        {
-            return Ok(response);
-        }
-        return NoContent();
+        var response = await _service.GetAllAsync(customerParameters, request, User);
+        return Ok(response);
     }
-
 
     /// <summary> 
     /// Atualizar cliente cadastrado
