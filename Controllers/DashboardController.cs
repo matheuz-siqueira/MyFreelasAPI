@@ -46,7 +46,7 @@ public class DashboardController : MyFreelasController
     /// <response code="200">Sucesso</response> 
     /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
-    [HttpGet("total-recurrents-customers")]
+    [HttpGet("total-recurrent-customers")]
     public async Task<ActionResult<ResponseRecurrentCustomerJson>> TotalRecurrentAsync()
     {
         try
