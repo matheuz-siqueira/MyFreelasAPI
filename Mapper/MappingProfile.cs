@@ -2,6 +2,7 @@ using AutoMapper;
 using HashidsNet;
 using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
+using myfreelas.Dtos.Dashboard;
 using myfreelas.Dtos.Freela;
 using myfreelas.Dtos.User;
 using myfreelas.Models;
@@ -60,6 +61,8 @@ public class MappingProfile : Profile
             .MapFrom(s => _hashids.Encode(s.Id)))
             .ForMember(d => d.CustomerId, cfg => cfg
             .MapFrom(s => _hashids.Encode(s.CustomerId)));
+
+
     }
 
     private void EntityToRequest()

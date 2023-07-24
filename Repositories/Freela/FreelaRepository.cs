@@ -9,14 +9,14 @@ public class FreelaRepository : IFreelaRepository
     private readonly Context _context;
     public FreelaRepository(Context context)
     {
-        _context = context; 
+        _context = context;
     }
 
     public async Task DeleteAsync(Models.Freela freela)
     {
-        _context.Remove(freela); 
+        _context.Remove(freela);
         await _context.SaveChangesAsync();
-         
+
     }
 
     public async Task<List<Models.Freela>> GetAllAsync(int userId, PaginationParameters paginationParameters)
@@ -44,9 +44,14 @@ public class FreelaRepository : IFreelaRepository
 
     public async Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela)
     {
-        await _context.AddAsync(freela); 
+        await _context.AddAsync(freela);
         await _context.SaveChangesAsync();
         return freela;
+    }
+
+    public async Task<int> TotalFreelasAsync(int userId)
+    {
+        return await _context.Freelas.AsNoTracking().CountAsync(f => f.UserId == userId);
     }
 
     public async Task UpdateAsync()
