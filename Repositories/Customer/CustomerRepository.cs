@@ -16,45 +16,46 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task DeleteAsync(int customerId)
     {
-        var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId); 
-        _context.Remove(customer); 
-        await _context.SaveChangesAsync();    
+        var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
+        _context.Remove(customer);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<List<Models.Customer>> GetAllAsync(int userId, PaginationParameters customerParameters)
     {
         return await _context.Customers
             .AsNoTracking().Where(c => c.UserId == userId)
-            .Skip((customerParameters.PageNumber -1) * customerParameters.PageSize)
+            .Include(c => c.Freelas)
+            .Skip((customerParameters.PageNumber - 1) * customerParameters.PageSize)
             .Take(customerParameters.PageSize)
-            .ToListAsync();  
+            .ToListAsync();
     }
 
     public Models.Customer GetByEmail(string email)
     {
-        return _context.Customers.AsNoTracking().FirstOrDefault(c => c.Email == email);  
+        return _context.Customers.AsNoTracking().FirstOrDefault(c => c.Email == email);
     }
 
     public async Task<Models.Customer> GetByIdAsync(int id, int userId)
-    {   
+    {
         return await _context.Customers
             .AsNoTracking()
                 .Where(c => c.UserId == userId)
-                    .Include(c => c.Freelas) 
+                    .Include(c => c.Freelas)
                     .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId)
     {
         return await _context.Customers.Where(c => c.UserId == userId)
-            .FirstOrDefaultAsync(c => c.Id == customerId); 
+            .FirstOrDefaultAsync(c => c.Id == customerId);
     }
 
     public async Task<Models.Customer> RegistesrCustomerAsync(Models.Customer customer)
     {
         await _context.Customers.AddAsync(customer);
         await _context.SaveChangesAsync();
-        return customer; 
+        return customer;
     }
 
     public async Task UpdateAsync()

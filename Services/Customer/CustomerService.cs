@@ -19,53 +19,53 @@ public class CustomerService : ICustomerService
     private readonly IMapper _mapper;
     public CustomerService(
         [FromServices] ICustomerRepository repository,
-        [FromServices] IMapper mapper, 
+        [FromServices] IMapper mapper,
         [FromServices] IHashids hashids)
     {
-        _repository = repository; 
-        _mapper = mapper; 
-        _hashids = hashids; 
+        _repository = repository;
+        _mapper = mapper;
+        _hashids = hashids;
     }
 
     public async Task<List<ResponseAllCustomerJson>> GetAllAsync(
         PaginationParameters customerParameters,
         RequestGetCustomersJson request, ClaimsPrincipal logged)
     {
-        var userId = GetCurrentUserId(logged); 
+        var userId = GetCurrentUserId(logged);
         var customers = await _repository.GetAllAsync(userId, customerParameters);
         customers = Filter(request, customers);
-        return _mapper.Map<List<ResponseAllCustomerJson>>(customers); 
-    
+        var response = _mapper.Map<List<ResponseAllCustomerJson>>(customers);
+        return response;
     }
 
     public async Task<ResponseCustomerJson> GetByIdAsync(ClaimsPrincipal logged, string cHashId)
     {
         var userId = GetCurrentUserId(logged);
         IsHash(cHashId);
-        var customerId = _hashids.DecodeSingle(cHashId); 
-        var customer = await _repository.GetByIdAsync(customerId, userId); 
-        if(customer is null)
+        var customerId = _hashids.DecodeSingle(cHashId);
+        var customer = await _repository.GetByIdAsync(customerId, userId);
+        if (customer is null)
         {
             throw new CustomerNotFoundException("Cliente não encontrado");
         }
-        return _mapper.Map<ResponseCustomerJson>(customer); 
+        return _mapper.Map<ResponseCustomerJson>(customer);
     }
 
     public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
         RequestCustomerJson request, ClaimsPrincipal logged)
     {
         var exists = _repository.GetByEmail(request.Email);
-        if(exists is not null)
+        if (exists is not null)
         {
-            throw new CustomerAlreadyExistsException("Cliente já cadastrado"); 
+            throw new CustomerAlreadyExistsException("Cliente já cadastrado");
         }
 
-        var customer = _mapper.Map<Models.Customer>(request); 
-        customer.UserId = GetCurrentUserId(logged); 
+        var customer = _mapper.Map<Models.Customer>(request);
+        customer.UserId = GetCurrentUserId(logged);
 
-        await _repository.RegistesrCustomerAsync(customer); 
+        await _repository.RegistesrCustomerAsync(customer);
         var response = _mapper.Map<ResponseRegisterCustomerJson>(customer);
-        return response; 
+        return response;
     }
 
     public async Task UpdateCustomerAsync(
@@ -73,26 +73,26 @@ public class CustomerService : ICustomerService
     {
         var userId = GetCurrentUserId(logged);
         IsHash(cHashId);
-        var customerId = _hashids.DecodeSingle(cHashId); 
-        var customer = await _repository.GetByIdUpdateAsync(customerId, userId); 
-        if(customer is null)
+        var customerId = _hashids.DecodeSingle(cHashId);
+        var customer = await _repository.GetByIdUpdateAsync(customerId, userId);
+        if (customer is null)
         {
             throw new CustomerNotFoundException("Cliente não encontrado");
         }
         _mapper.Map(request, customer);
-        await _repository.UpdateAsync();  
+        await _repository.UpdateAsync();
     }
     public async Task DeleteAsync(ClaimsPrincipal logged, string cHashId)
     {
-        var userId = GetCurrentUserId(logged); 
+        var userId = GetCurrentUserId(logged);
         IsHash(cHashId);
         var customerId = _hashids.DecodeSingle(cHashId);
-        var customer = await _repository.GetByIdAsync(customerId, userId); 
-        if(customer is null)
+        var customer = await _repository.GetByIdAsync(customerId, userId);
+        if (customer is null)
         {
-            throw new CustomerNotFoundException("Cliente não encontrado"); 
-        }        
-        await _repository.DeleteAsync(customerId); 
+            throw new CustomerNotFoundException("Cliente não encontrado");
+        }
+        await _repository.DeleteAsync(customerId);
     }
 
     private int GetCurrentUserId(ClaimsPrincipal logged)
@@ -102,7 +102,7 @@ public class CustomerService : ICustomerService
     private void IsHash(string hashid)
     {
         var isHash = _hashids.TryDecodeSingle(hashid, out int id);
-        if(!isHash)
+        if (!isHash)
         {
             throw new InvalidIDException("ID do cliente inválido");
         }
@@ -110,11 +110,11 @@ public class CustomerService : ICustomerService
     private static List<Models.Customer> Filter(RequestGetCustomersJson request, List<Models.Customer> customers)
     {
         var filters = customers;
-        if(!string.IsNullOrWhiteSpace(request.Name))
+        if (!string.IsNullOrWhiteSpace(request.Name))
         {
             filters = customers.Where(c => c.Name.CompareWithIgnoreCase(request.Name)).ToList();
         }
         return filters.OrderBy(c => c.Name).ToList();
     }
-    
+
 }
