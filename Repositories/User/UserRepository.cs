@@ -16,24 +16,23 @@ public class UserRepository : IUserRepository
     public async Task CreateUserAsync(Models.User user)
     {
         _context.Users?.AddAsync(user);
-        await _context.SaveChangesAsync();  
+        await _context.SaveChangesAsync();
     }
 
     public Models.User GetByEmail(string email)
     {
-        return _context.Users.AsNoTracking().FirstOrDefault(user => user.Email == email);  
+        return _context.Users.AsNoTracking().FirstOrDefault(user => user.Email == email);
     }
 
     public Task<Models.User> GetByIdAsync(int id)
     {
-        return _context.Users.FirstOrDefaultAsync(user => user.Id == id); 
+        return _context.Users.FirstOrDefaultAsync(user => user.Id == id);
     }
 
     public async Task<Models.User> GetProfileAsync(int id)
     {
-        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id); 
+        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Id == id);
     }
-
     public async Task UpdatePasswordAsync(Models.User user)
     {
         await _context.SaveChangesAsync();

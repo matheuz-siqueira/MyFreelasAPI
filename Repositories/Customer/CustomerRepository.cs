@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
-using myfreelas.Dtos.Customer;
 using myfreelas.Pagination;
 
 namespace myfreelas.Repositories.Customer;
@@ -39,10 +38,8 @@ public class CustomerRepository : ICustomerRepository
     public async Task<Models.Customer> GetByIdAsync(int id, int userId)
     {
         return await _context.Customers
-            .AsNoTracking()
-                .Where(c => c.UserId == userId)
-                    .Include(c => c.Freelas)
-                    .FirstOrDefaultAsync(c => c.Id == id);
+            .AsNoTracking().Where(c => c.UserId == userId).Include(c => c.Freelas)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId)
@@ -56,6 +53,12 @@ public class CustomerRepository : ICustomerRepository
         await _context.Customers.AddAsync(customer);
         await _context.SaveChangesAsync();
         return customer;
+    }
+
+    public async Task<int> TotalCustomers(int userId)
+    {
+        return await _context.Customers.AsNoTracking()
+            .CountAsync(c => c.UserId == userId);
     }
 
     public async Task UpdateAsync()
