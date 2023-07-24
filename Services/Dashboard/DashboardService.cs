@@ -2,18 +2,20 @@ using System.Security.Claims;
 using AutoMapper;
 using myfreelas.Dtos.Dashboard;
 using myfreelas.Repositories.Customer;
+using myfreelas.Repositories.Freela;
 
 namespace myfreelas.Services.Dashboard;
 
 public class DashboardService : IDashboardService
 {
     private readonly ICustomerRepository _customerRepository;
-    private readonly IMapper _mapper;
+    private readonly IFreelaRepository _freelaRepository;
 
-    public DashboardService(ICustomerRepository customerRepository, IMapper mapper)
+    public DashboardService(ICustomerRepository customerRepository,
+        IFreelaRepository freelaRepository)
     {
         _customerRepository = customerRepository;
-        _mapper = mapper;
+        _freelaRepository = freelaRepository;
     }
     public async Task<ResponseTotalCustomers> TotalCustomersAsync(ClaimsPrincipal logged)
     {
@@ -23,7 +25,16 @@ public class DashboardService : IDashboardService
         {
             TotalCustomers = customers
         };
+    }
 
+    public async Task<ResponseTotalFreelasJson> TotalFreelasAsync(ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged);
+        var freelas = await _freelaRepository.TotalFreelasAsync(userId);
+        return new ResponseTotalFreelasJson
+        {
+            TotalFreelas = freelas
+        };
     }
 
     private int GetCurrentUserId(ClaimsPrincipal logged)
