@@ -15,7 +15,7 @@ public class DashboardController : MyFreelasController
     }
 
     /// <summary> 
-    /// Obter o total de clientes de um usuário
+    /// Obter o total de clientes
     /// </summary> 
     /// <returns>Total de clientes</returns> 
     /// <response code="200">Sucesso</response>
@@ -27,6 +27,31 @@ public class DashboardController : MyFreelasController
         try
         {
             var response = await _service.TotalCustomersAsync(User);
+            if (response is null)
+            {
+                return NoContent();
+            }
+            return Ok(response);
+        }
+        catch
+        {
+            return StatusCode(500, "Erro interno");
+        }
+    }
+
+    /// <summary> 
+    /// Obter clientes recorrentes
+    /// </summary> 
+    /// <returns>Clientes recorrentes</returns> 
+    /// <response code="200">Sucesso</response> 
+    /// <response code="204">Sucesso</response> 
+    /// <response code="500">Erro interno</response> 
+    [HttpGet("total-recurrents-customers")]
+    public async Task<ActionResult<ResponseRecurrentCustomerJson>> TotalRecurrentAsync()
+    {
+        try
+        {
+            var response = await _service.TotalRecurrentAsync(User);
             if (response is null)
             {
                 return NoContent();

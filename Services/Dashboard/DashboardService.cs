@@ -37,6 +37,16 @@ public class DashboardService : IDashboardService
         };
     }
 
+    public async Task<ResponseRecurrentCustomerJson> TotalRecurrentAsync(ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged);
+        var customers = await _customerRepository.TotalRecurrentAsync(userId);
+        return new ResponseRecurrentCustomerJson
+        {
+            TotalRecurrent = customers
+        };
+    }
+
     private int GetCurrentUserId(ClaimsPrincipal logged)
     {
         return int.Parse(logged.FindFirstValue(ClaimTypes.NameIdentifier));
