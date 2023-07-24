@@ -336,7 +336,7 @@
 									"   ",
 									"    let jsonData = pm.response.json()",
 									"    pm.expect(jsonData).to.be.an(\"array\");",
-									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\");",
+									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"email\", \"totalProjects\");",
 									"",
 									"})"
 								],
@@ -803,6 +803,149 @@
 								"freelas",
 								"delete-freela",
 								"{{IDFREELA}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "total-customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar total de clientes com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"    pm.response.to.be.jsonBody(\"totalCustomers\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-customers",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"total-customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "total-freelas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar total de projetos com sucesso\", function(){",
+									"    pm.response.to.have.status(200); ",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"    pm.response.to.be.jsonBody(\"totalFreelas\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-freelas",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"total-freelas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "total-recurrent-customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar clientes recorrentes com sucesso\", function(){",
+									"    pm.response.to.have.status(200); ",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"    pm.response.to.be.jsonBody(\"totalRecurrent\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-recurrent-customers",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"total-recurrent-customers"
 							]
 						}
 					},
