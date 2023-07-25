@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
+using myfreelas.Models.Enums;
 using myfreelas.Pagination;
 
 namespace myfreelas.Repositories.Customer;
@@ -64,7 +65,14 @@ public class CustomerRepository : ICustomerRepository
     public async Task<int> TotalPFCustomersAsync(int userId)
     {
         return await _context.Customers.AsNoTracking()
-            .Where(c => c.UserId == userId).CountAsync(c => c.Type == 0);
+            .Where(c => c.UserId == userId)
+                .CountAsync(c => c.Type == Models.Enums.CustomerEnum.PF);
+    }
+
+    public async Task<int> TotalPJCustomersAsync(int userId)
+    {
+        return await _context.Customers.AsNoTracking()
+            .Where(c => c.UserId == userId).CountAsync(c => c.Type == Models.Enums.CustomerEnum.PJ);
     }
 
     public async Task<int> TotalRecurrentAsync(int userId)

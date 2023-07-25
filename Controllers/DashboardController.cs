@@ -22,7 +22,7 @@ public class DashboardController : MyFreelasController
     /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
     [HttpGet("total-customers")]
-    public async Task<ActionResult<ResponseTotalCustomers>> GetTotalCustomersAsync()
+    public async Task<ActionResult<ResponseTotalCustomers>> GetAllCustomersAsync()
     {
         try
         {
@@ -47,7 +47,7 @@ public class DashboardController : MyFreelasController
     /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
     [HttpGet("total-recurrent-customers")]
-    public async Task<ActionResult<ResponseRecurrentCustomerJson>> TotalRecurrentAsync()
+    public async Task<ActionResult<ResponseRecurrentCustomerJson>> GetRecurrentAsync()
     {
         try
         {
@@ -71,7 +71,7 @@ public class DashboardController : MyFreelasController
     /// <response code="200">Sucesso</response>
     /// <response code="500">Erro interno</response>
     [HttpGet("total-pf-customers")]
-    public async Task<ActionResult<ResponseTotalPFCustomers>> TotalPFCustomersAsync()
+    public async Task<ActionResult<ResponseTotalPFCustomers>> GetPFCustomersAsync()
     {
         try
         {
@@ -80,7 +80,27 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(201, "Erro na requisição");
+            return StatusCode(201, "Erro interno");
+        }
+    }
+
+    /// <summary> 
+    /// Obter o total de clientes que são pessoa jurídica
+    /// </summary> 
+    /// <returns>Total de clientes PJ</returns> 
+    /// <response code="200">Sucesso</response>
+    /// <response code="500">Erro interno</response>
+    [HttpGet("total-pj-customers")]
+    public async Task<ActionResult<ResponseTotalPJCustomersJson>> GetPJCustomersAsync()
+    {
+        try
+        {
+            var response = await _service.TotalPJCustomersAsync(User);
+            return Ok(response);
+        }
+        catch
+        {
+            return StatusCode(500, "Erro interno");
         }
     }
 

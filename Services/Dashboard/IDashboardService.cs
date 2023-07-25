@@ -9,4 +9,5 @@ public interface IDashboardService
     Task<ResponseTotalFreelasJson> TotalFreelasAsync(ClaimsPrincipal logged);
     Task<ResponseRecurrentCustomerJson> TotalRecurrentAsync(ClaimsPrincipal logged);
     Task<ResponseTotalPFCustomers> TotalPFCustomersAsync(ClaimsPrincipal logged);
+    Task<ResponseTotalPJCustomersJson> TotalPJCustomersAsync(ClaimsPrincipal logged);
 }
