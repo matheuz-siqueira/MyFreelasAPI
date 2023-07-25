@@ -65,6 +65,26 @@ public class DashboardController : MyFreelasController
     }
 
     /// <summary> 
+    /// Obter o total de clientes que são pessoa física
+    /// </summary> 
+    /// <returns>Total de clientes PF</returns> 
+    /// <response code="200">Sucesso</response>
+    /// <response code="500">Erro interno</response>
+    [HttpGet("total-pf-customers")]
+    public async Task<ActionResult<ResponseTotalPFCustomers>> TotalPFCustomersAsync()
+    {
+        try
+        {
+            var response = await _service.TotalPFCustomersAsync(User);
+            return Ok(response);
+        }
+        catch
+        {
+            return StatusCode(201, "Erro na requisição");
+        }
+    }
+
+    /// <summary> 
     /// Obter o total de projetos de um usuário 
     /// </summary> 
     /// <returns>Total de projetos</returns> 
