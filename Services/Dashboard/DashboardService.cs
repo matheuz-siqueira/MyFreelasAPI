@@ -37,6 +37,16 @@ public class DashboardService : IDashboardService
         };
     }
 
+    public async Task<ResponseTotalPFCustomers> TotalPFCustomersAsync(ClaimsPrincipal logged)
+    {
+        var userId = GetCurrentUserId(logged);
+        var customersPF = await _customerRepository.TotalPFCustomersAsync(userId);
+        return new ResponseTotalPFCustomers
+        {
+            TotalPFCustomers = customersPF
+        };
+    }
+
     public async Task<ResponseRecurrentCustomerJson> TotalRecurrentAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);

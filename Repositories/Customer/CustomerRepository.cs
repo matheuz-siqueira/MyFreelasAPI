@@ -61,6 +61,12 @@ public class CustomerRepository : ICustomerRepository
             .CountAsync(c => c.UserId == userId);
     }
 
+    public async Task<int> TotalPFCustomersAsync(int userId)
+    {
+        return await _context.Customers.AsNoTracking()
+            .Where(c => c.UserId == userId).CountAsync(c => c.Type == 0);
+    }
+
     public async Task<int> TotalRecurrentAsync(int userId)
     {
         return await _context.Customers.AsNoTracking()
