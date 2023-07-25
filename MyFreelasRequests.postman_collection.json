@@ -860,17 +860,18 @@
 					"response": []
 				},
 				{
-					"name": "total-freelas",
+					"name": "total-pj-customers",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Recuperar total de projetos com sucesso\", function(){",
-									"    pm.response.to.have.status(200); ",
-									"    pm.response.to.be.withBody; ",
-									"    pm.response.to.be.json; ",
-									"    pm.response.to.be.jsonBody(\"totalFreelas\");",
+									"pm.test(\"Recuperar clientes PJ com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.response.to.be.jsonBody(\"totalPJCustomers\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -891,7 +892,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URLBASE}}/api/v1/dashboard/total-freelas",
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-pj-customers",
 							"host": [
 								"{{URLBASE}}"
 							],
@@ -899,7 +900,54 @@
 								"api",
 								"v1",
 								"dashboard",
-								"total-freelas"
+								"total-pj-customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "total-pf-customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar clientes PJ com sucesso\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.withBody;",
+									"    pm.response.to.be.json;",
+									"",
+									"    pm.response.to.be.jsonBody(\"totalPFCustomers\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-pf-customers",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"total-pf-customers"
 							]
 						}
 					},
@@ -946,6 +994,52 @@
 								"v1",
 								"dashboard",
 								"total-recurrent-customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "total-freelas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Recuperar total de projetos com sucesso\", function(){",
+									"    pm.response.to.have.status(200); ",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"    pm.response.to.be.jsonBody(\"totalFreelas\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/total-freelas",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"total-freelas"
 							]
 						}
 					},
