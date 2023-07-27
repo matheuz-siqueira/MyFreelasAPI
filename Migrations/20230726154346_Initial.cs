@@ -73,9 +73,6 @@ namespace myfreelas.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "text", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Value = table.Column<decimal>(type: "decimal(9,3)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    FinishDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CustomerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -97,6 +94,37 @@ namespace myfreelas.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Contracts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Price = table.Column<decimal>(type: "decimal(9,3)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FinishDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    StartPayment = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    PaymentInstallment = table.Column<int>(type: "int", nullable: false),
+                    FreelaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Freelas_FreelaId",
+                        column: x => x.FreelaId,
+                        principalTable: "Freelas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_FreelaId",
+                table: "Contracts",
+                column: "FreelaId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_UserId",
                 table: "Customers",
@@ -115,6 +143,9 @@ namespace myfreelas.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Contracts");
+
             migrationBuilder.DropTable(
                 name: "Freelas");
 

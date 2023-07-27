@@ -19,6 +19,38 @@ namespace myfreelas.Migrations
                 .HasAnnotation("ProductVersion", "6.0.19")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("myfreelas.Models.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FinishDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("FreelaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentInstallment")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(9,3)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartPayment")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FreelaId")
+                        .IsUnique();
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("myfreelas.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -65,21 +97,12 @@ namespace myfreelas.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("FinishDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(120)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("decimal(9,3)");
 
                     b.HasKey("Id");
 
@@ -117,6 +140,17 @@ namespace myfreelas.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("myfreelas.Models.Contract", b =>
+                {
+                    b.HasOne("myfreelas.Models.Freela", "Freela")
+                        .WithOne("Contract")
+                        .HasForeignKey("myfreelas.Models.Contract", "FreelaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Freela");
+                });
+
             modelBuilder.Entity("myfreelas.Models.Customer", b =>
                 {
                     b.HasOne("myfreelas.Models.User", "User")
@@ -150,6 +184,11 @@ namespace myfreelas.Migrations
             modelBuilder.Entity("myfreelas.Models.Customer", b =>
                 {
                     b.Navigation("Freelas");
+                });
+
+            modelBuilder.Entity("myfreelas.Models.Freela", b =>
+                {
+                    b.Navigation("Contract");
                 });
 
             modelBuilder.Entity("myfreelas.Models.User", b =>

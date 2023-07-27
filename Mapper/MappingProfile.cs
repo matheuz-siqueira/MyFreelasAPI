@@ -30,7 +30,7 @@ public class MappingProfile : Profile
             .ForMember(d => d.CustomerId, cfg => cfg
             .MapFrom(s => _hashids.DecodeSingle(s.CustomerId)));
 
-        CreateMap<RequestUpdateFreelaJson, Freela>();
+        CreateMap<RequestRegisterContractJson, Contract>();
 
     }
 
@@ -53,8 +53,10 @@ public class MappingProfile : Profile
             .ForMember(d => d.TotalProjects, cfg => cfg.MapFrom(s => s.Freelas.Count));
 
         CreateMap<Freela, ResponseFreelaJson>()
-            .ForMember(d => d.Id, cfg => cfg
-            .MapFrom(s => _hashids.Encode(s.Id)));
+            .ForMember(d => d.Id, cfg => cfg.MapFrom(s => _hashids.Encode(s.Id)));
+
+        CreateMap<Contract, ResponseContractJson>()
+            .ForMember(d => d.Id, cfg => cfg.MapFrom(s => _hashids.Encode(s.Id)));
 
         CreateMap<Freela, ResponseAllFreelasJson>()
             .ForMember(d => d.Id, cfg => cfg

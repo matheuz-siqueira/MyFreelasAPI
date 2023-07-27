@@ -32,7 +32,9 @@ public class FreelaRepository : IFreelaRepository
     {
         return await _context.Freelas
             .AsNoTracking()
-                .Where(f => f.UserId == userId).FirstOrDefaultAsync(f => f.Id == freelaId);
+                .Where(f => f.UserId == userId)
+                .Include(f => f.Contract)
+                .FirstOrDefaultAsync(f => f.Id == freelaId);
     }
 
     public async Task<Models.Freela> GetByIdUpdateAsync(int userId, int freelaId)
