@@ -30,6 +30,8 @@ public class MappingProfile : Profile
             .ForMember(d => d.CustomerId, cfg => cfg
             .MapFrom(s => _hashids.DecodeSingle(s.CustomerId)));
 
+        CreateMap<RequestUpdateFreelaJson, Freela>();
+
         CreateMap<RequestRegisterContractJson, Contract>();
 
     }
