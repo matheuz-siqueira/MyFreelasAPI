@@ -96,7 +96,6 @@ public class FreelaService : IFreelaService
         }
         _mapper.Map(request, freela);
         await _freelaRpository.UpdateAsync();
-
     }
 
     private int GetCurrentUserId(ClaimsPrincipal logged)

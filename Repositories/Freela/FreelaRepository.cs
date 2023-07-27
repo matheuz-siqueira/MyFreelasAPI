@@ -41,6 +41,7 @@ public class FreelaRepository : IFreelaRepository
     {
         return await _context.Freelas
             .Where(f => f.UserId == userId)
+                .Include(f => f.Contract)
                 .FirstOrDefaultAsync(f => f.Id == freelaId);
     }
 
