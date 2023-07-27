@@ -552,11 +552,22 @@
 									"    pm.response.to.be.jsonBody(\"id\");",
 									"    pm.response.to.be.jsonBody(\"name\");",
 									"    pm.response.to.be.jsonBody(\"description\");",
-									"    pm.response.to.be.jsonBody(\"value\"); ",
+									"    pm.response.to.be.jsonBody(\"contract\");",
 									"",
 									"    let jsonData = pm.response.json(); ",
 									"    pm.environment.set(\"IDFREELA\", jsonData.id);",
 									"})"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var installments = _.random(1, 12)",
+									"",
+									"pm.environment.set(\"installments\", installments);"
 								],
 								"type": "text/javascript"
 							}
@@ -577,7 +588,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"value\": 2000,\n  \"startDate\": \"2023-07-21T13:40:13.063Z\",\n  \"finishDate\": \"2023-11-21T13:40:13.063Z\",\n  \"customerId\": \"{{IDCUSTOMER}}\"\n}",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"contract\": {\n    \"price\": {{$randomPrice}},\n    \"startDate\": \"2023-07-27T14:13:30.485Z\",\n    \"finishDate\": \"2023-11-27T14:13:30.485Z\",\n    \"startPayment\": \"2023-08-27T14:13:30.485Z\",\n    \"paymentInstallment\": {{installments}}\n  },\n  \"customerId\": \"{{IDCUSTOMER}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -614,7 +625,7 @@
 									"",
 									"    let jsonData = pm.response.json(); ",
 									"    pm.expect(jsonData).to.be.an(\"array\");",
-									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"description\", \"value\", \"customerId\");",
+									"    pm.expect(jsonData[0]).to.have.key(\"id\", \"name\", \"description\", \"customerId\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -673,9 +684,7 @@
 									"    pm.response.to.be.jsonBody(\"id\");",
 									"    pm.response.to.be.jsonBody(\"name\");",
 									"    pm.response.to.be.jsonBody(\"description\");",
-									"    pm.response.to.be.jsonBody(\"value\");",
-									"    pm.response.to.be.jsonBody(\"startDate\");",
-									"    pm.response.to.be.jsonBody(\"finishDate\");",
+									"    pm.response.to.be.jsonBody(\"contract\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -741,7 +750,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"value\": 1,\n  \"startDate\": \"2023-07-21T14:09:47.176Z\",\n  \"finishDate\": \"2023-11-11T14:09:47.176Z\"\n}",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"contract\": {\n    \"price\": {{$randomPrice}},\n    \"startDate\": \"2023-07-27T14:37:40.592Z\",\n    \"finishDate\": \"2023-11-27T14:37:40.592Z\",\n    \"startPayment\": \"2023-08-27T14:37:40.592Z\",\n    \"paymentInstallment\": {{installments}}\n  }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
