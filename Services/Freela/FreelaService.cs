@@ -7,6 +7,7 @@ using myfreelas.Extension;
 using myfreelas.Pagination;
 using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Freela;
+using myfreelas.Repositories.Installment;
 
 namespace myfreelas.Services.Freela;
 
@@ -14,16 +15,19 @@ public class FreelaService : IFreelaService
 {
     private readonly IFreelaRepository _freelaRpository;
     private readonly ICustomerRepository _customerRepository;
+    private readonly IInstallmentRepository _installmentRepository;
     private readonly IMapper _mapper;
     private readonly IHashids _hashids;
 
     public FreelaService(IFreelaRepository freelaRepository,
         ICustomerRepository customerRepository,
+        IInstallmentRepository installmentRepository,
         IMapper mapper,
         IHashids hashids)
     {
         _freelaRpository = freelaRepository;
         _customerRepository = customerRepository;
+        _installmentRepository = installmentRepository;
         _mapper = mapper;
         _hashids = hashids;
     }
@@ -68,6 +72,20 @@ public class FreelaService : IFreelaService
         }
         var freela = _mapper.Map<Models.Freela>(request);
         freela.UserId = userId;
+
+        var priceInstallment = freela.Price / freela.PaymentInstallment;
+        var paymentMonth = freela.StartPayment;
+        var finish = freela.PaymentInstallment;
+
+        for (int i = 0; i < finish; i++)
+        {
+            var item = new Models.Installment();
+            item.FreelaId = freela.Id;
+            item.Month = paymentMonth.AddMonths(i);
+            item.Value = priceInstallment;
+            freela.Installments.Add(item);
+        }
+
         await _freelaRpository.RegisterFreelaAsync(freela);
         return _mapper.Map<ResponseFreelaJson>(freela);
     }
@@ -120,4 +138,9 @@ public class FreelaService : IFreelaService
         }
         return filters.OrderBy(c => c.Name).ToList();
     }
+
+    // private async void AddInstallment(Models.Freela freela)
+    // {
+
+    // }
 }

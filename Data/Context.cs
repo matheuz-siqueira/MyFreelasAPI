@@ -10,5 +10,5 @@ public class Context : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Freela> Freelas { get; set; }
-    public DbSet<Contract> Contracts { get; set; }
+    public DbSet<Installment> Installments { get; set; }
 }

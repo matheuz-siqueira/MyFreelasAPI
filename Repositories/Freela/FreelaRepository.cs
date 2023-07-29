@@ -33,7 +33,7 @@ public class FreelaRepository : IFreelaRepository
         return await _context.Freelas
             .AsNoTracking()
                 .Where(f => f.UserId == userId)
-                .Include(f => f.Contract)
+                .Include(f => f.Installments)
                 .FirstOrDefaultAsync(f => f.Id == freelaId);
     }
 
@@ -41,13 +41,12 @@ public class FreelaRepository : IFreelaRepository
     {
         return await _context.Freelas
             .Where(f => f.UserId == userId)
-                .Include(f => f.Contract)
                 .FirstOrDefaultAsync(f => f.Id == freelaId);
     }
 
     public async Task<Models.Freela> RegisterFreelaAsync(Models.Freela freela)
     {
-        await _context.AddAsync(freela);
+        await _context.Freelas.AddAsync(freela);
         await _context.SaveChangesAsync();
         return freela;
     }

@@ -15,17 +15,32 @@ public class Freela
     [Column(TypeName = "text")]
     public string Description { get; set; }
 
+    [Required]
+    [Column(TypeName = "decimal(9,3)")]
+    public decimal Price { get; set; }
+
+    [Required]
+    public DateTime StartDate { get; set; }
+
+    [Required]
+    public DateTime FinishDate { get; set; }
+
+    [Required]
+    public DateTime StartPayment { get; set; }
+    public int PaymentInstallment { get; set; }
+
+
     //Navigation property 
     public User User { get; set; }
 
     [Required]
     public int UserId { get; set; }
-
     public Customer Customer { get; set; }
-
     [Required]
     public int CustomerId { get; set; }
-    public Contract Contract { get; set; }
+
+    public List<Installment> Installments { get; set; } = new List<Installment>();
+
 
 }
 
