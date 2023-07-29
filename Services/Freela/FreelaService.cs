@@ -7,7 +7,6 @@ using myfreelas.Extension;
 using myfreelas.Pagination;
 using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Freela;
-using myfreelas.Repositories.Installment;
 
 namespace myfreelas.Services.Freela;
 
@@ -15,19 +14,16 @@ public class FreelaService : IFreelaService
 {
     private readonly IFreelaRepository _freelaRpository;
     private readonly ICustomerRepository _customerRepository;
-    private readonly IInstallmentRepository _installmentRepository;
     private readonly IMapper _mapper;
     private readonly IHashids _hashids;
 
     public FreelaService(IFreelaRepository freelaRepository,
         ICustomerRepository customerRepository,
-        IInstallmentRepository installmentRepository,
         IMapper mapper,
         IHashids hashids)
     {
         _freelaRpository = freelaRepository;
         _customerRepository = customerRepository;
-        _installmentRepository = installmentRepository;
         _mapper = mapper;
         _hashids = hashids;
     }
@@ -139,8 +135,4 @@ public class FreelaService : IFreelaService
         return filters.OrderBy(c => c.Name).ToList();
     }
 
-    // private async void AddInstallment(Models.Freela freela)
-    // {
-
-    // }
 }
