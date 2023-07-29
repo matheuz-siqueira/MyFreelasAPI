@@ -15,13 +15,13 @@ using myfreelas.Validators;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Repositories.Customer;
 using myfreelas.Services.Customer;
-using myfreelas.Dtos.Customer;
 using myfreelas.Dtos;
 using HashidsNet;
 using myfreelas.Repositories.Freela;
 using myfreelas.Services.Freela;
 using myfreelas.Dtos.Freela;
 using myfreelas.Services.Dashboard;
+using myfreelas.Repositories.Installment;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +40,7 @@ builder.Services.AddScoped<IFreelaService, FreelaService>();
 builder.Services.AddScoped<IValidator<RequestRegisterFreelaJson>, RegisterFreelaValidator>();
 builder.Services.AddScoped<IValidator<RequestUpdateFreelaJson>, UpdateFreelaValidator>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IInstallmentRepository, InstallmentRepository>();
 
 
 builder.Services.AddDbContext<Context>(

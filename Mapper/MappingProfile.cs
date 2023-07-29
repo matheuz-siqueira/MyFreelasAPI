@@ -32,8 +32,6 @@ public class MappingProfile : Profile
 
         CreateMap<RequestUpdateFreelaJson, Freela>();
 
-        CreateMap<RequestRegisterContractJson, Contract>();
-
     }
 
     private void EntityToResponse()
@@ -57,14 +55,13 @@ public class MappingProfile : Profile
         CreateMap<Freela, ResponseFreelaJson>()
             .ForMember(d => d.Id, cfg => cfg.MapFrom(s => _hashids.Encode(s.Id)));
 
-        CreateMap<Contract, ResponseContractJson>()
-            .ForMember(d => d.Id, cfg => cfg.MapFrom(s => _hashids.Encode(s.Id)));
-
         CreateMap<Freela, ResponseAllFreelasJson>()
             .ForMember(d => d.Id, cfg => cfg
             .MapFrom(s => _hashids.Encode(s.Id)))
             .ForMember(d => d.CustomerId, cfg => cfg
             .MapFrom(s => _hashids.Encode(s.CustomerId)));
+
+        CreateMap<Installment, ResponseInstallmentJson>();
 
 
     }
