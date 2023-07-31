@@ -129,6 +129,17 @@ public class DashboardController : MyFreelasController
         }
     }
 
+    /// <summary> 
+    /// Obter previsão mensal de faturamento
+    /// </summary> 
+    /// <remarks> 
+    /// { "date" : "yyyy-MM-dd" }
+    /// </remarks>
+    /// <params name="request">Data para consulta</params>  
+    /// <returns>Previsão de faturamento</returns> 
+    /// <response code="200">Sucesso</response> 
+    /// <response code="401">Não autenticado</response> 
+    /// <response code="500">Erro interno</response>  
     [HttpPost("monthly-billing")]
     public async Task<ActionResult<ResponseMonthlyBillingJson>> GetMonthlyBillingAsync(
         RequestGetMonthlyBillingJson request)
@@ -136,7 +147,7 @@ public class DashboardController : MyFreelasController
         try
         {
             var response = await _service.MonthlyBillingAsync(request);
-            return response;
+            return Ok(response);
         }
         catch
         {

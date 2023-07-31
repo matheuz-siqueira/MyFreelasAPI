@@ -549,10 +549,16 @@
 									"pm.test(\"Validar requisição registrar projeto com sucesso\", function(){",
 									"    pm.response.to.have.status(201); ",
 									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json;",
 									"    pm.response.to.be.jsonBody(\"id\");",
 									"    pm.response.to.be.jsonBody(\"name\");",
 									"    pm.response.to.be.jsonBody(\"description\");",
-									"    pm.response.to.be.jsonBody(\"contract\");",
+									"    pm.response.to.be.jsonBody(\"price\");",
+									"    pm.response.to.be.jsonBody(\"startDate\");",
+									"    pm.response.to.be.jsonBody(\"finishDate\");",
+									"    pm.response.to.be.jsonBody(\"startPayment\");",
+									"    pm.response.to.be.jsonBody(\"paymentInstallment\");",
+									"    pm.response.to.be.jsonBody(\"installments\");",
 									"",
 									"    let jsonData = pm.response.json(); ",
 									"    pm.environment.set(\"IDFREELA\", jsonData.id);",
@@ -588,7 +594,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"contract\": {\n    \"price\": {{$randomPrice}},\n    \"startDate\": \"2023-07-27T14:13:30.485Z\",\n    \"finishDate\": \"2023-11-27T14:13:30.485Z\",\n    \"startPayment\": \"2023-08-27T14:13:30.485Z\",\n    \"paymentInstallment\": {{installments}}\n  },\n  \"customerId\": \"{{IDCUSTOMER}}\"\n}",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"price\": {{$randomPrice}},\n  \"startDate\": \"2023-07-27T14:13:30.485Z\",\n  \"finishDate\": \"2023-11-27T14:13:30.485Z\",\n  \"startPayment\": \"2023-08-27T14:13:30.485Z\",\n  \"paymentInstallment\": {{installments}},\n  \"customerId\": \"{{IDCUSTOMER}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -684,7 +690,12 @@
 									"    pm.response.to.be.jsonBody(\"id\");",
 									"    pm.response.to.be.jsonBody(\"name\");",
 									"    pm.response.to.be.jsonBody(\"description\");",
-									"    pm.response.to.be.jsonBody(\"contract\");",
+									"    pm.response.to.be.jsonBody(\"price\");",
+									"    pm.response.to.be.jsonBody(\"startDate\");",
+									"    pm.response.to.be.jsonBody(\"finishDate\");",
+									"    pm.response.to.be.jsonBody(\"startPayment\");",
+									"    pm.response.to.be.jsonBody(\"paymentInstallment\");",
+									"    pm.response.to.be.jsonBody(\"installments\");",
 									"})"
 								],
 								"type": "text/javascript"
@@ -750,7 +761,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"contract\": {\n    \"price\": {{$randomPrice}},\n    \"startDate\": \"2023-07-27T14:37:40.592Z\",\n    \"finishDate\": \"2023-11-27T14:37:40.592Z\",\n    \"startPayment\": \"2023-08-27T14:37:40.592Z\",\n    \"paymentInstallment\": {{installments}}\n  }\n}",
+							"raw": "{\n  \"name\": \"{{$randomJobTitle}}\",\n  \"description\": \"{{$randomJobDescriptor}}\",\n  \"price\": {{$randomPrice}},\n  \"startDate\": \"2023-07-27T14:37:40.592Z\",\n  \"finishDate\": \"2023-11-27T14:37:40.592Z\",\n  \"startPayment\": \"2023-08-27T14:37:40.592Z\",\n  \"paymentInstallment\": {{installments}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1049,6 +1060,61 @@
 								"v1",
 								"dashboard",
 								"total-freelas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "monthly-billing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validar recuperar previsão de faturamento com sucesso\", function(){",
+									"    pm.response.to.have.status(200); ",
+									"    pm.response.to.be.withBody; ",
+									"    pm.response.to.be.json; ",
+									"    pm.response.to.be.jsonBody(\"monthlyBilling\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2023-10-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URLBASE}}/api/v1/dashboard/monthly-billing",
+							"host": [
+								"{{URLBASE}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard",
+								"monthly-billing"
 							]
 						}
 					},
