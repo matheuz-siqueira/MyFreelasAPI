@@ -1,6 +1,6 @@
 namespace myfreelas.Dtos.Dashboard;
 
-public class ResponseTotalCustomers
+public class ResponseTotalCustomersJson
 {
     public int TotalCustomers { get; set; }
 }

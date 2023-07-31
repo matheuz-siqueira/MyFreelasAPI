@@ -23,7 +23,7 @@ public class DashboardController : MyFreelasController
     /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response> 
     [HttpGet("total-customers")]
-    public async Task<ActionResult<ResponseTotalCustomers>> GetAllCustomersAsync()
+    public async Task<ActionResult<ResponseTotalCustomersJson>> GetAllCustomersAsync()
     {
         try
         {
@@ -74,7 +74,7 @@ public class DashboardController : MyFreelasController
     /// <response code="401">Não autenticado</response>
     /// <response code="500">Erro interno</response>
     [HttpGet("total-pf-customers")]
-    public async Task<ActionResult<ResponseTotalPFCustomers>> GetPFCustomersAsync()
+    public async Task<ActionResult<ResponseTotalPFCustomersJson>> GetPFCustomersAsync()
     {
         try
         {
