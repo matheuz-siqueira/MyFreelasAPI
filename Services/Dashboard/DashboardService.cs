@@ -32,11 +32,11 @@ public class DashboardService : IDashboardService
         };
     }
 
-    public async Task<ResponseTotalCustomers> TotalCustomersAsync(ClaimsPrincipal logged)
+    public async Task<ResponseTotalCustomersJson> TotalCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
         var customers = await _customerRepository.TotalCustomers(userId);
-        return new ResponseTotalCustomers
+        return new ResponseTotalCustomersJson
         {
             TotalCustomers = customers
         };
@@ -52,11 +52,11 @@ public class DashboardService : IDashboardService
         };
     }
 
-    public async Task<ResponseTotalPFCustomers> TotalPFCustomersAsync(ClaimsPrincipal logged)
+    public async Task<ResponseTotalPFCustomersJson> TotalPFCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
         var customersPF = await _customerRepository.TotalPFCustomersAsync(userId);
-        return new ResponseTotalPFCustomers
+        return new ResponseTotalPFCustomersJson
         {
             TotalPFCustomers = customersPF
         };
