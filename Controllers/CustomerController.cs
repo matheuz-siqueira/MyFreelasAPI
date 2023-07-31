@@ -16,11 +16,11 @@ public class CustomerController : MyFreelasController
     private readonly ICustomerService _service;
     private readonly IValidator<RequestCustomerJson> _validatorRegisterCustomer;
     public CustomerController(
-        [FromServices] ICustomerService service, 
+        [FromServices] ICustomerService service,
         [FromServices] IValidator<RequestCustomerJson> validatorRegisterCustomer)
     {
-        _service = service; 
-        _validatorRegisterCustomer = validatorRegisterCustomer; 
+        _service = service;
+        _validatorRegisterCustomer = validatorRegisterCustomer;
     }
 
     /// <summary> 
@@ -35,24 +35,24 @@ public class CustomerController : MyFreelasController
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response>
 
-    
+
     [HttpPost("register-customer")]
     public async Task<ActionResult<ResponseRegisterCustomerJson>> RegisterCustomerAsync(
         [FromBody] RequestCustomerJson request)
     {
-        var result = _validatorRegisterCustomer.Validate(request); 
-        if(!result.IsValid)
+        var result = _validatorRegisterCustomer.Validate(request);
+        if (!result.IsValid)
         {
             return BadRequest(result.Errors.ToCustomValidationFailure());
         }
-        try 
+        try
         {
-            var response = await _service.RegisterCustomerAsync(request, User); 
-            return StatusCode(201, response); 
+            var response = await _service.RegisterCustomerAsync(request, User);
+            return StatusCode(201, response);
         }
-        catch(CustomerAlreadyExistsException e)
+        catch (CustomerAlreadyExistsException e)
         {
-            return BadRequest(new {message = e.Message} );
+            return BadRequest(new { message = e.Message });
         }
     }
 
@@ -66,24 +66,24 @@ public class CustomerController : MyFreelasController
     /// <response code="401">Não autenticado</response>
     /// <response code="400">Erro na requisição</response> 
     /// <response code="404">Não encontrado</response>  
-      
-    
+
+
     [HttpGet("getbyid/{cHashId}")]
     public async Task<ActionResult<ResponseCustomerJson>> GetByIdAsync(
-        [FromRoute] string cHashId) 
+        [FromRoute] string cHashId)
     {
-        try 
+        try
         {
-            var response = await _service.GetByIdAsync(User, cHashId); 
+            var response = await _service.GetByIdAsync(User, cHashId);
             return Ok(response);
         }
-        catch(CustomerNotFoundException e)
+        catch (CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
-            return BadRequest(new { message = e.Message }); 
+            return BadRequest(new { message = e.Message });
         }
     }
 
@@ -99,15 +99,15 @@ public class CustomerController : MyFreelasController
     /// <response code="204">Sucesso</response> 
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response>
-    
-    
+
+
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllCustomerJson>>> GetAllAsync(
-        [FromQuery] PaginationParameters customerParameters, 
+        [FromQuery] PaginationParameters customerParameters,
         [FromBody] RequestGetCustomersJson request)
-    {   
+    {
         var response = await _service.GetAllAsync(customerParameters, request, User);
-        if(!response.Any())
+        if (!response.Any())
         {
             return NoContent();
         }
@@ -127,17 +127,17 @@ public class CustomerController : MyFreelasController
     /// <response code="400">Erro</response>
     /// <response code="404">Cliente não encontrado</response>
 
-    
+
     [HttpPut("update-customer/{cHashId}")]
     public async Task<ActionResult> UpdateCustomerAsync(
         [FromRoute] string cHashId, [FromBody] RequestCustomerJson request)
     {
         try
         {
-            await _service.UpdateCustomerAsync(User, request, cHashId); 
+            await _service.UpdateCustomerAsync(User, request, cHashId);
             return NoContent();
         }
-        catch(CustomerNotFoundException e)
+        catch (CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -157,22 +157,22 @@ public class CustomerController : MyFreelasController
     /// <response code="401">Não autenticado</response> 
     /// <response code="404">Não encontrado</response>  
 
-    
-    [HttpDelete("delete-customer/{cHashId}")] 
+
+    [HttpDelete("delete-customer/{cHashId}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] string cHashId)
     {
-        try 
+        try
         {
-            await _service.DeleteAsync(User, cHashId); 
-            return NoContent(); 
+            await _service.DeleteAsync(User, cHashId);
+            return NoContent();
         }
-        catch(CustomerNotFoundException e)
+        catch (CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
-            return BadRequest(new { message = e.Message }); 
+            return BadRequest(new { message = e.Message });
         }
         catch
         {

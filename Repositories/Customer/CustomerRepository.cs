@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using myfreelas.Data;
-using myfreelas.Models.Enums;
 using myfreelas.Pagination;
 
 namespace myfreelas.Repositories.Customer;
@@ -48,6 +47,7 @@ public class CustomerRepository : ICustomerRepository
         return await _context.Customers.Where(c => c.UserId == userId)
             .FirstOrDefaultAsync(c => c.Id == customerId);
     }
+
 
     public async Task<Models.Customer> RegistesrCustomerAsync(Models.Customer customer)
     {
