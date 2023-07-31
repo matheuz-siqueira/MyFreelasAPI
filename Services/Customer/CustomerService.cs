@@ -7,6 +7,7 @@ using myfreelas.Dtos;
 using myfreelas.Dtos.Customer;
 using myfreelas.Exceptions.BaseException;
 using myfreelas.Extension;
+using myfreelas.Models.Enums;
 using myfreelas.Pagination;
 using myfreelas.Repositories.Customer;
 
@@ -48,7 +49,16 @@ public class CustomerService : ICustomerService
         {
             throw new CustomerNotFoundException("Cliente não encontrado");
         }
-        return _mapper.Map<ResponseCustomerJson>(customer);
+        var response = _mapper.Map<ResponseCustomerJson>(customer);
+        if (customer.Type == CustomerEnum.PF)
+        {
+            response.Type = "PF";
+        }
+        else
+        {
+            response.Type = "PJ";
+        }
+        return response;
     }
 
     public async Task<ResponseRegisterCustomerJson> RegisterCustomerAsync(
@@ -64,7 +74,17 @@ public class CustomerService : ICustomerService
         customer.UserId = GetCurrentUserId(logged);
 
         await _repository.RegistesrCustomerAsync(customer);
+
         var response = _mapper.Map<ResponseRegisterCustomerJson>(customer);
+        if (customer.Type == CustomerEnum.PF)
+        {
+            response.Type = "PF";
+        }
+        else
+        {
+            response.Type = "PF";
+        }
+
         return response;
     }
 
@@ -116,5 +136,4 @@ public class CustomerService : ICustomerService
         }
         return filters.OrderBy(c => c.Name).ToList();
     }
-
 }
