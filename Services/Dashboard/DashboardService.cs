@@ -3,20 +3,35 @@ using AutoMapper;
 using myfreelas.Dtos.Dashboard;
 using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Freela;
+using myfreelas.Repositories.Installment;
 
 namespace myfreelas.Services.Dashboard;
 
 public class DashboardService : IDashboardService
 {
+    private readonly IInstallmentRepository _installmentRepository;
     private readonly ICustomerRepository _customerRepository;
     private readonly IFreelaRepository _freelaRepository;
 
     public DashboardService(ICustomerRepository customerRepository,
-        IFreelaRepository freelaRepository)
+        IFreelaRepository freelaRepository,
+        IInstallmentRepository installmentRepository)
     {
         _customerRepository = customerRepository;
         _freelaRepository = freelaRepository;
+        _installmentRepository = installmentRepository;
     }
+
+    public async Task<ResponseMonthlyBillingJson> MonthlyBillingAsync(RequestGetMonthlyBillingJson request)
+    {
+        var date = request.Date;
+        var result = await _installmentRepository.MonthlyBillingAsync(date);
+        return new ResponseMonthlyBillingJson
+        {
+            MonthlyBilling = result
+        };
+    }
+
     public async Task<ResponseTotalCustomers> TotalCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
