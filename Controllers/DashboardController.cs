@@ -128,4 +128,21 @@ public class DashboardController : MyFreelasController
             return StatusCode(500, "Erro interno");
         }
     }
+
+    [HttpPost("monthly-billing")]
+    public async Task<ActionResult<ResponseMonthlyBillingJson>> GetMonthlyBillingAsync(
+        RequestGetMonthlyBillingJson request)
+    {
+        try
+        {
+            var response = await _service.MonthlyBillingAsync(request);
+            return response;
+        }
+        catch
+        {
+            return StatusCode(500, "Internal error server");
+        }
+
+    }
+
 }

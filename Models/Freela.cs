@@ -21,17 +21,14 @@ public class Freela
 
     [Required]
     [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime StartDate { get; set; }
 
     [Required]
     [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime FinishDate { get; set; }
 
     [Required]
     [DataType(DataType.Date)]
-    [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
     public DateTime StartPayment { get; set; }
     public int PaymentInstallment { get; set; }
 

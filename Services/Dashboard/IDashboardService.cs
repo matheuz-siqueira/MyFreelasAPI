@@ -10,4 +10,5 @@ public interface IDashboardService
     Task<ResponseRecurrentCustomerJson> TotalRecurrentAsync(ClaimsPrincipal logged);
     Task<ResponseTotalPFCustomers> TotalPFCustomersAsync(ClaimsPrincipal logged);
     Task<ResponseTotalPJCustomersJson> TotalPJCustomersAsync(ClaimsPrincipal logged);
+    Task<ResponseMonthlyBillingJson> MonthlyBillingAsync(RequestGetMonthlyBillingJson request);
 }

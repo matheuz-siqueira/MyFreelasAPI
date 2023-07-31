@@ -68,7 +68,6 @@ public class FreelaService : IFreelaService
         }
         var freela = _mapper.Map<Models.Freela>(request);
         freela.UserId = userId;
-
         var priceInstallment = freela.Price / freela.PaymentInstallment;
         var paymentMonth = freela.StartPayment;
         var finish = freela.PaymentInstallment;
