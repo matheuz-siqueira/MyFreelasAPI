@@ -15,20 +15,20 @@ public class FreelaController : MyFreelasController
     private readonly IFreelaService _service;
     private readonly IValidator<RequestRegisterFreelaJson> _validatorRegisterFreela;
     private readonly IValidator<RequestUpdateFreelaJson> _validatorUpdateFreela;
-    public FreelaController(IFreelaService service, 
+    public FreelaController(IFreelaService service,
         IValidator<RequestRegisterFreelaJson> validatorRegisterFreela,
         IValidator<RequestUpdateFreelaJson> validatorUpdateFreela)
     {
-        _service = service; 
+        _service = service;
         _validatorRegisterFreela = validatorRegisterFreela;
-        _validatorUpdateFreela = validatorUpdateFreela;  
-    }     
+        _validatorUpdateFreela = validatorUpdateFreela;
+    }
 
     /// <summary> 
     /// Registrar projeto freela no sistema
     /// </summary> 
     /// <remarks> 
-    /// {"name":"string","description":"string","value":0,"startDate":"2023-07-17T03:47:45.391Z","finishDate":"2023-07-17T03:47:45.391Z","customerId":"string"}
+    /// {"name":"string","description":"string","price":0,"startDate":"2023-07-31","finishDate":"2023-07-31","startPayment":"2023-07-31","paymentInstallment":0,"customerId":"string"}
     /// </remarks> 
     /// <params name="request">Dados do projetos</params> 
     /// <returns>Projeto cadastrado</returns> 
@@ -36,26 +36,26 @@ public class FreelaController : MyFreelasController
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response> 
 
-    
+
     [HttpPost("register-freela")]
     public async Task<ActionResult<ResponseFreelaJson>> RegisterFreelaAsync(
         [FromBody] RequestRegisterFreelaJson request)
     {
-        var result = _validatorRegisterFreela.Validate(request); 
-        if(!result.IsValid)
+        var result = _validatorRegisterFreela.Validate(request);
+        if (!result.IsValid)
         {
             return BadRequest(result.Errors.ToCustomValidationFailure());
         }
-        try 
+        try
         {
-            var response = await _service.RegisterFreelaAsync(User, request); 
-            return StatusCode(201, response); 
+            var response = await _service.RegisterFreelaAsync(User, request);
+            return StatusCode(201, response);
         }
-        catch(CustomerNotFoundException e)
+        catch (CustomerNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
             return BadRequest(new { message = e.Message });
         }
@@ -72,24 +72,24 @@ public class FreelaController : MyFreelasController
     /// <response code="200">Sucesso</response>
     /// <response code="204">Sucesso</response> 
     /// <response code="500">Erro interno</response> 
-    
+
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllFreelasJson>>> GetAllAsync(
         [FromQuery] PaginationParameters paginationParameters,
-        [FromBody] RequestGetFreelaJson request) 
+        [FromBody] RequestGetFreelaJson request)
     {
-        try 
+        try
         {
-            var response = await _service.GetAllAsync(User, request, paginationParameters); 
-            if(response.Any())
+            var response = await _service.GetAllAsync(User, request, paginationParameters);
+            if (response.Any())
             {
                 return Ok(response);
-            } 
-            return NoContent(); 
+            }
+            return NoContent();
         }
         catch
         {
-            return BadRequest("Erro na requisição"); 
+            return BadRequest("Erro na requisição");
         }
     }
 
@@ -108,26 +108,26 @@ public class FreelaController : MyFreelasController
     /// <response code="401">Não autenticado</response>
     /// <response code="404">Não encontrado</response>
 
-    
+
     [HttpPut("update-freela/{fHashId}")]
     public async Task<ActionResult> UpdateAsync(
         [FromRoute] string fHashId, [FromBody] RequestUpdateFreelaJson request)
     {
-        var result = _validatorUpdateFreela.Validate(request); 
-        if(!result.IsValid)
+        var result = _validatorUpdateFreela.Validate(request);
+        if (!result.IsValid)
         {
             return BadRequest(result.Errors.ToCustomValidationFailure());
         }
-        try 
+        try
         {
             await _service.UpdateAsync(User, fHashId, request);
-            return NoContent(); 
+            return NoContent();
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
             return BadRequest(new { message = e.Message });
         }
-        catch(ProjectNotFoundException e)
+        catch (ProjectNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -142,21 +142,21 @@ public class FreelaController : MyFreelasController
     /// <response code="400">Erro na requisição</response> 
     /// <response code="404">Não encontrado</response> 
     /// <response code="401">Não autenticado</response> 
-    
+
     [HttpGet("get-by-id/{fHashId}")]
     public async Task<ActionResult<ResponseFreelaJson>> GetByIdAsync(
         [FromRoute] string fHashId)
     {
-        try 
+        try
         {
-            var response = await _service.GetByIdAsync(User, fHashId); 
-            return Ok(response); 
+            var response = await _service.GetByIdAsync(User, fHashId);
+            return Ok(response);
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
             return BadRequest(new { message = e.Message });
         }
-        catch(ProjectNotFoundException e)
+        catch (ProjectNotFoundException e)
         {
             return NotFound(new { message = e.Message });
         }
@@ -171,22 +171,22 @@ public class FreelaController : MyFreelasController
     /// <response code="400">Erro na requisição</response>
     /// <response code="401">Não autenticado</response> 
     /// <response code="404">Não encontrado</response>  
-    
+
     [HttpDelete("delete-freela/{fHashId}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] string fHashId)
     {
-        try 
+        try
         {
-            await _service.DeleteAsync(User, fHashId); 
+            await _service.DeleteAsync(User, fHashId);
             return NoContent();
         }
-        catch(ProjectNotFoundException e)
+        catch (ProjectNotFoundException e)
         {
-            return BadRequest(new { message = e.Message }); 
+            return BadRequest(new { message = e.Message });
         }
-        catch(InvalidIDException e)
+        catch (InvalidIDException e)
         {
-            return NotFound(new { message = e.Message }); 
-        } 
+            return NotFound(new { message = e.Message });
+        }
     }
 }
