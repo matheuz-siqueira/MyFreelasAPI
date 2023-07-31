@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AutoMapper;
 using myfreelas.Dtos.Dashboard;
 using myfreelas.Repositories.Customer;
+using myfreelas.Repositories.Dashboard;
 using myfreelas.Repositories.Freela;
 using myfreelas.Repositories.Installment;
 
@@ -10,14 +11,14 @@ namespace myfreelas.Services.Dashboard;
 public class DashboardService : IDashboardService
 {
     private readonly IInstallmentRepository _installmentRepository;
-    private readonly ICustomerRepository _customerRepository;
+    private readonly IDashboardRepository _dashboardRepository;
     private readonly IFreelaRepository _freelaRepository;
 
-    public DashboardService(ICustomerRepository customerRepository,
+    public DashboardService(IDashboardRepository dashboardRepository,
         IFreelaRepository freelaRepository,
         IInstallmentRepository installmentRepository)
     {
-        _customerRepository = customerRepository;
+        _dashboardRepository = dashboardRepository;
         _freelaRepository = freelaRepository;
         _installmentRepository = installmentRepository;
     }
@@ -35,7 +36,7 @@ public class DashboardService : IDashboardService
     public async Task<ResponseTotalCustomersJson> TotalCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
-        var customers = await _customerRepository.TotalCustomers(userId);
+        var customers = await _dashboardRepository.TotalCustomers(userId);
         return new ResponseTotalCustomersJson
         {
             TotalCustomers = customers
@@ -55,7 +56,7 @@ public class DashboardService : IDashboardService
     public async Task<ResponseTotalPFCustomersJson> TotalPFCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
-        var customersPF = await _customerRepository.TotalPFCustomersAsync(userId);
+        var customersPF = await _dashboardRepository.TotalPFCustomersAsync(userId);
         return new ResponseTotalPFCustomersJson
         {
             TotalPFCustomers = customersPF
@@ -65,7 +66,7 @@ public class DashboardService : IDashboardService
     public async Task<ResponseTotalPJCustomersJson> TotalPJCustomersAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
-        var customers = await _customerRepository.TotalPJCustomersAsync(userId);
+        var customers = await _dashboardRepository.TotalPJCustomersAsync(userId);
         return new ResponseTotalPJCustomersJson
         {
             TotalPJCustomers = customers
@@ -75,7 +76,7 @@ public class DashboardService : IDashboardService
     public async Task<ResponseRecurrentCustomerJson> TotalRecurrentAsync(ClaimsPrincipal logged)
     {
         var userId = GetCurrentUserId(logged);
-        var customers = await _customerRepository.TotalRecurrentAsync(userId);
+        var customers = await _dashboardRepository.TotalRecurrentAsync(userId);
         return new ResponseRecurrentCustomerJson
         {
             TotalRecurrent = customers

@@ -13,8 +13,4 @@ public interface ICustomerRepository
     Task DeleteAsync(int customerId);
     Task UpdateAsync();
     Task<Models.Customer> GetByIdUpdateAsync(int customerId, int userId);
-    Task<int> TotalCustomers(int userId);
-    Task<int> TotalRecurrentAsync(int userId);
-    Task<int> TotalPFCustomersAsync(int userId);
-    Task<int> TotalPJCustomersAsync(int userId);
 }
