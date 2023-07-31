@@ -18,14 +18,14 @@ public class AuthenticationController : MyFreelasController
         [FromServices] IValidator<RequestAuthenticationJson> validator)
     {
         _service = service;
-        _validator = validator; 
+        _validator = validator;
     }
 
     /// <summary> 
     /// Logar no sistema
     /// </summary>
     /// <remarks> 
-    /// { "email": "string", "password": "string" }
+    /// { "email": "your@mail", "password": "your-password" }
     /// </remarks>
     /// <params name="request">Credencias de login</params>
     /// <returns>Token</returns>
@@ -37,17 +37,17 @@ public class AuthenticationController : MyFreelasController
     public ActionResult<ResponseAuthenticationJson> Login
         ([FromBody] RequestAuthenticationJson request)
     {
-        var result = _validator.Validate(request); 
-        if(!result.IsValid)
+        var result = _validator.Validate(request);
+        if (!result.IsValid)
         {
             return BadRequest(result.Errors.ToCustomValidationFailure());
         }
         try
         {
-            var respone =  _service.Login(request); 
+            var respone = _service.Login(request);
             return Ok(respone);
         }
-        catch(BadHttpRequestException e)
+        catch (BadHttpRequestException e)
         {
             return BadRequest(new { message = e.Message });
         }

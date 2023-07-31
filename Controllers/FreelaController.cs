@@ -28,14 +28,13 @@ public class FreelaController : MyFreelasController
     /// Registrar projeto freela no sistema
     /// </summary> 
     /// <remarks> 
-    /// {"name":"string","description":"string","price":0,"startDate":"2023-07-31","finishDate":"2023-07-31","startPayment":"2023-07-31","paymentInstallment":0,"customerId":"string"}
+    /// {"name":"name project","description":"description","price":0,"startDate":"yyyy-MM-dd","finishDate":"yyyy-MM-dd","startPayment":"yyyy-MM-dd","paymentInstallment":0,"customerId":"HashId"}
     /// </remarks> 
-    /// <params name="request">Dados do projetos</params> 
+    /// <params name="request">Dados do projeto</params> 
     /// <returns>Projeto cadastrado</returns> 
     /// <response code="201">Sucesso</response> 
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response> 
-
 
     [HttpPost("register-freela")]
     public async Task<ActionResult<ResponseFreelaJson>> RegisterFreelaAsync(
@@ -65,12 +64,13 @@ public class FreelaController : MyFreelasController
     /// Obter Lista de projetos cadastrados
     /// </summary> 
     /// <remarks> 
-    /// { name: "string" }
+    /// { name: "name project" }
     /// </remarks>
     /// <params name="request">Filtro de pesquisa</params> 
     /// <returns>Lista de projetos cadastrados</returns> 
     /// <response code="200">Sucesso</response>
-    /// <response code="204">Sucesso</response> 
+    /// <response code="204">Sucesso</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response> 
 
     [HttpPost("get-all")]
@@ -87,9 +87,13 @@ public class FreelaController : MyFreelasController
             }
             return NoContent();
         }
+        catch (BadHttpRequestException)
+        {
+            return BadRequest(new { message = "Erro na requisição" });
+        }
         catch
         {
-            return BadRequest("Erro na requisição");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
@@ -98,7 +102,7 @@ public class FreelaController : MyFreelasController
     /// Editar projeto cadastrado
     /// </summary> 
     /// <remarks> 
-    /// {"name":"string","description":"string","value":0,"startDate":"2023-07-17T03:47:45.391Z","finishDate":"2023-07-17T03:47:45.391Z" }
+    /// {"name":"name project","description":"description","price":0,"startDate":"yyyy-MM-dd","finishDate":"yyyy-MM-dd","startPayment":"yyyy-MM-dd","paymentInstallment":0,"customerId":"HashId"}
     /// </remarks> 
     /// <params name="fHashId">ID do projeto</params> 
     /// <params name="request">Dados para atualizar</params> 
@@ -140,8 +144,8 @@ public class FreelaController : MyFreelasController
     /// <returns>Projeto com ID correspondente</returns> 
     /// <response code="200">Sucesso</response> 
     /// <response code="400">Erro na requisição</response> 
+    /// <response code="401">Não autenticado</response>
     /// <response code="404">Não encontrado</response> 
-    /// <response code="401">Não autenticado</response> 
 
     [HttpGet("get-by-id/{fHashId}")]
     public async Task<ActionResult<ResponseFreelaJson>> GetByIdAsync(

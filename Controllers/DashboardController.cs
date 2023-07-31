@@ -17,9 +17,10 @@ public class DashboardController : MyFreelasController
     /// <summary> 
     /// Obter o total de clientes
     /// </summary> 
-    /// <returns>Total de clientes</returns> 
+    /// <returns>Todos os clients</returns> 
     /// <response code="200">Sucesso</response>
-    /// <response code="204">Sucesso</response> 
+    /// <response code="204">Sucesso</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response> 
     [HttpGet("total-customers")]
     public async Task<ActionResult<ResponseTotalCustomers>> GetAllCustomersAsync()
@@ -35,7 +36,7 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(500, "Erro interno");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
@@ -44,7 +45,8 @@ public class DashboardController : MyFreelasController
     /// </summary> 
     /// <returns>Clientes recorrentes</returns> 
     /// <response code="200">Sucesso</response> 
-    /// <response code="204">Sucesso</response> 
+    /// <response code="204">Sucesso</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response> 
     [HttpGet("total-recurrent-customers")]
     public async Task<ActionResult<ResponseRecurrentCustomerJson>> GetRecurrentAsync()
@@ -60,15 +62,16 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(500, "Erro interno");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
     /// <summary> 
-    /// Obter o total de clientes que são pessoa física
+    /// Obter total de clientes pessoa física (PF)
     /// </summary> 
     /// <returns>Total de clientes PF</returns> 
     /// <response code="200">Sucesso</response>
+    /// <response code="401">Não autenticado</response>
     /// <response code="500">Erro interno</response>
     [HttpGet("total-pf-customers")]
     public async Task<ActionResult<ResponseTotalPFCustomers>> GetPFCustomersAsync()
@@ -80,15 +83,16 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(201, "Erro interno");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
     /// <summary> 
-    /// Obter o total de clientes que são pessoa jurídica
+    /// Obter total de clientes pessoa jurídica (PJ)
     /// </summary> 
     /// <returns>Total de clientes PJ</returns> 
     /// <response code="200">Sucesso</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response>
     [HttpGet("total-pj-customers")]
     public async Task<ActionResult<ResponseTotalPJCustomersJson>> GetPJCustomersAsync()
@@ -100,16 +104,17 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(500, "Erro interno");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
     /// <summary> 
-    /// Obter o total de projetos de um usuário 
+    /// Obter o total de projetos cadastrados 
     /// </summary> 
     /// <returns>Total de projetos</returns> 
     /// <response code="200">Sucesso</response>
-    /// <response code="204">Sucesso</response> 
+    /// <response code="204">Sucesso</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response>  
     [HttpGet("total-freelas")]
     public async Task<ActionResult<ResponseTotalFreelasJson>> TotalFreelasAsync()
@@ -125,7 +130,7 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(500, "Erro interno");
+            return StatusCode(500, new { message = "Erro interno" });
         }
     }
 
@@ -151,9 +156,7 @@ public class DashboardController : MyFreelasController
         }
         catch
         {
-            return StatusCode(500, "Internal error server");
+            return StatusCode(500, new { message = "Erro interno" });
         }
-
     }
-
 }
