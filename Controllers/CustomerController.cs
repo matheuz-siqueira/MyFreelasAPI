@@ -24,10 +24,10 @@ public class CustomerController : MyFreelasController
     }
 
     /// <summary> 
-    /// Registra cliente 
+    /// Registrar cliente no sistema
     /// </summary>
     /// <remarks>
-    /// {"name":"string","type":0,"email":"string","phoneNumber":"string","otherContact":"string"}
+    /// {"name":"name-customer","type":0,"email":"customer@mail","phoneNumber":"customer-phone","otherContact":"customer-contact"}
     /// </remarks>
     /// <params name="request">Dados do cliente</params> 
     /// <returns>Cliente cadastrado</returns>
@@ -63,10 +63,9 @@ public class CustomerController : MyFreelasController
     /// <params name="id">ID do cliente</params> 
     /// <returns>Cliente correspondente ao ID</returns> 
     /// <response code="200">Sucesso</response> 
-    /// <response code="401">Não autenticado</response>
-    /// <response code="400">Erro na requisição</response> 
+    /// <response code="400">Erro na requisição</response>
+    /// <response code="401">Não autenticado</response> 
     /// <response code="404">Não encontrado</response>  
-
 
     [HttpGet("getbyid/{cHashId}")]
     public async Task<ActionResult<ResponseCustomerJson>> GetByIdAsync(
@@ -91,7 +90,7 @@ public class CustomerController : MyFreelasController
     /// Obter clientes de um usuário 
     /// </summary> 
     /// <remarks> 
-    /// { name: "string" }
+    /// { name: "name customer" }
     /// </remarks>
     /// <params name="request">Nome do cliente</params> 
     /// <returns>Clientes correspondente com o filtro de pesquisa</returns> 
@@ -99,7 +98,6 @@ public class CustomerController : MyFreelasController
     /// <response code="204">Sucesso</response> 
     /// <response code="400">Erro</response> 
     /// <response code="401">Não autenticado</response>
-
 
     [HttpPost("get-all")]
     public async Task<ActionResult<List<ResponseAllCustomerJson>>> GetAllAsync(
@@ -120,13 +118,13 @@ public class CustomerController : MyFreelasController
     /// <params name="id">ID do cliente</params> 
     /// <params name="request">Dados do cliente</params> 
     /// <remarks> 
-    /// {"name":"string","type":0,"email":"string","phoneNumber":"string","otherContact":"string"}
+    /// {"name":"name-customer","type":0,"email":"customer@mail","phoneNumber":"customer-phone","otherContact":"customer-contact"}
     /// </remarks>
     /// <returns>Nada</returns> 
     /// <response code="204">Sucesso</response>
     /// <response code="400">Erro</response>
+    /// <response code="401">Não autenticado</response>
     /// <response code="404">Cliente não encontrado</response>
-
 
     [HttpPut("update-customer/{cHashId}")]
     public async Task<ActionResult> UpdateCustomerAsync(
@@ -143,7 +141,7 @@ public class CustomerController : MyFreelasController
         }
         catch
         {
-            return BadRequest("Erro na requisição");
+            return BadRequest(new { message = "Erro na requisição" });
         }
     }
 
@@ -176,7 +174,7 @@ public class CustomerController : MyFreelasController
         }
         catch
         {
-            return BadRequest("Erro na requisição");
+            return BadRequest(new { message = "Erro na requisição" });
         }
     }
 }
