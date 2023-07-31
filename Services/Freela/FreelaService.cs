@@ -81,9 +81,10 @@ public class FreelaService : IFreelaService
             item.Value = priceInstallment;
             freela.Installments.Add(item);
         }
-
         await _freelaRpository.RegisterFreelaAsync(freela);
         return _mapper.Map<ResponseFreelaJson>(freela);
+
+
     }
     public async Task DeleteAsync(ClaimsPrincipal logged, string fHashId)
     {
