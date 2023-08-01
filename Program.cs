@@ -23,6 +23,7 @@ using myfreelas.Dtos.Freela;
 using myfreelas.Services.Dashboard;
 using myfreelas.Repositories.Installment;
 using myfreelas.Repositories.Dashboard;
+using myfreelas.Dtos.Dashboard;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,7 @@ builder.Services.AddScoped<IValidator<RequestUpdateFreelaJson>, UpdateFreelaVali
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IInstallmentRepository, InstallmentRepository>();
-
+builder.Services.AddScoped<IValidator<RequestGetMonthlyBillingJson>, GetMonthlyBillingValidator>();
 
 
 builder.Services.AddDbContext<Context>(
