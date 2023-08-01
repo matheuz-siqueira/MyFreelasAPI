@@ -1,7 +1,5 @@
 using System.Security.Claims;
-using AutoMapper;
 using myfreelas.Dtos.Dashboard;
-using myfreelas.Repositories.Customer;
 using myfreelas.Repositories.Dashboard;
 using myfreelas.Repositories.Freela;
 using myfreelas.Repositories.Installment;
