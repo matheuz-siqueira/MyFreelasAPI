@@ -50,14 +50,7 @@ public class CustomerService : ICustomerService
             throw new CustomerNotFoundException("Cliente não encontrado");
         }
         var response = _mapper.Map<ResponseCustomerJson>(customer);
-        if (customer.Type == CustomerEnum.PF)
-        {
-            response.Type = "PF";
-        }
-        else
-        {
-            response.Type = "PJ";
-        }
+        response.Type = TypeCustomer(customer);
         return response;
     }
 
@@ -76,15 +69,7 @@ public class CustomerService : ICustomerService
         await _repository.RegistesrCustomerAsync(customer);
 
         var response = _mapper.Map<ResponseRegisterCustomerJson>(customer);
-        if (customer.Type == CustomerEnum.PF)
-        {
-            response.Type = "PF";
-        }
-        else
-        {
-            response.Type = "PF";
-        }
-
+        response.Type = TypeCustomer(customer);
         return response;
     }
 
@@ -112,7 +97,7 @@ public class CustomerService : ICustomerService
         {
             throw new CustomerNotFoundException("Cliente não encontrado");
         }
-        await _repository.DeleteAsync(customerId);
+        await _repository.RemoveAsync(customerId);
     }
 
     private int GetCurrentUserId(ClaimsPrincipal logged)
@@ -135,5 +120,17 @@ public class CustomerService : ICustomerService
             filters = customers.Where(c => c.Name.CompareWithIgnoreCase(request.Name)).ToList();
         }
         return filters.OrderBy(c => c.Name).ToList();
+    }
+
+    private string TypeCustomer(Models.Customer customer)
+    {
+        if (customer.Type == CustomerEnum.PJ)
+        {
+            return "PJ";
+        }
+        else
+        {
+            return "PF";
+        }
     }
 }

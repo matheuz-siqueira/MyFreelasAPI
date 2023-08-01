@@ -13,7 +13,7 @@ public class CustomerRepository : ICustomerRepository
         _context = context;
     }
 
-    public async Task DeleteAsync(int customerId)
+    public async Task RemoveAsync(int customerId)
     {
         var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Id == customerId);
         _context.Remove(customer);
