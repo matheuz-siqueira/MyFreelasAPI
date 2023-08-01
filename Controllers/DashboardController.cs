@@ -1,5 +1,7 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using myfreelas.Dtos.Dashboard;
+using myfreelas.Exceptions.ErrorsValidators;
 using myfreelas.Services.Dashboard;
 
 namespace myfreelas.Controllers;
@@ -9,9 +11,12 @@ namespace myfreelas.Controllers;
 public class DashboardController : MyFreelasController
 {
     private readonly IDashboardService _service;
-    public DashboardController(IDashboardService service)
+    private readonly IValidator<RequestGetMonthlyBillingJson> _validator;
+    public DashboardController(IDashboardService service,
+        IValidator<RequestGetMonthlyBillingJson> validator)
     {
         _service = service;
+        _validator = validator;
     }
 
     /// <summary> 
@@ -138,17 +143,24 @@ public class DashboardController : MyFreelasController
     /// Obter previsão mensal de faturamento
     /// </summary> 
     /// <remarks> 
-    /// { "date" : "yyyy-MM-dd" }
+    /// {"dateYear":yyyy, "dateMonth": MM}
     /// </remarks>
     /// <params name="request">Data para consulta</params>  
     /// <returns>Previsão de faturamento</returns> 
     /// <response code="200">Sucesso</response> 
+    /// <response code="400">Erro na requisição</response>
     /// <response code="401">Não autenticado</response> 
     /// <response code="500">Erro interno</response>  
+
     [HttpPost("monthly-billing")]
     public async Task<ActionResult<ResponseMonthlyBillingJson>> GetMonthlyBillingAsync(
         RequestGetMonthlyBillingJson request)
     {
+        var result = _validator.Validate(request);
+        if (!result.IsValid)
+        {
+            return BadRequest(result.Errors.ToCustomValidationFailure());
+        }
         try
         {
             var response = await _service.MonthlyBillingAsync(request);

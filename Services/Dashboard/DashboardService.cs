@@ -23,8 +23,9 @@ public class DashboardService : IDashboardService
 
     public async Task<ResponseMonthlyBillingJson> MonthlyBillingAsync(RequestGetMonthlyBillingJson request)
     {
-        var date = request.Date;
-        var result = await _installmentRepository.MonthlyBillingAsync(date);
+        var year = request.DateYear;
+        var month = request.DateMonth;
+        var result = await _installmentRepository.MonthlyBillingAsync(year, month);
         return new ResponseMonthlyBillingJson
         {
             MonthlyBilling = result
