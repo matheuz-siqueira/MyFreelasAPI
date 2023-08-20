@@ -63,6 +63,9 @@ public class MappingProfile : Profile
 
         CreateMap<Installment, ResponseInstallmentJson>();
 
+        CreateMap<Freela, ResponseFreelasByCustomerJson>()
+           .ForMember(d => d.Id, cfg => cfg
+           .MapFrom(s => _hashids.Encode(s.Id)));
 
     }
 

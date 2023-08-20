@@ -11,7 +11,7 @@ using myfreelas.Data;
 namespace myfreelas.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230731195337_Initial")]
+    [Migration("20230820162638_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
