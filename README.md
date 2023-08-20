@@ -69,7 +69,7 @@ E outras.
 
 1. Clone o repositório
    ```sh
-   git clone https://github.com/matheuz-siqueira myfreelas.git
+   git clone https://github.com/matheuz-siqueira/myfreelas.git
    ```
 2. Preenche as informações no arquivo `appsettings.Development.json`
 
