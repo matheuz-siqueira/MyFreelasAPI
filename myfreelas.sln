@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "myfreelas", "myfreelas.csproj", "{B4980E27-3E0D-49EC-9BF2-996C05E5C116}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFreelas.Application", "MyFreelas.Application\MyFreelas.Application.csproj", "{6740EF43-0288-4FDB-ADF7-6968BDE3052B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFreelas.Domain", "MyFreelas.Domain\MyFreelas.Domain.csproj", "{E1189297-F5A4-4392-9964-7956BE6EB385}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFreelas.Infra.Data", "MyFreelas.Infra.Data\MyFreelas.Infra.Data.csproj", "{99A90161-DF8A-45FD-B990-DDC711A08B83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFreelas.Infra.IoC", "MyFreelas.Infra.IoC\MyFreelas.Infra.IoC.csproj", "{5FDD097F-497E-41B3-BB5E-FF8F253332A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFreelas.WebUI", "MyFreelas.WebUI\MyFreelas.WebUI.csproj", "{1D9F75A6-D5B9-496B-9C9E-77EC4962215F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,26 @@ Global
 		{B4980E27-3E0D-49EC-9BF2-996C05E5C116}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4980E27-3E0D-49EC-9BF2-996C05E5C116}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4980E27-3E0D-49EC-9BF2-996C05E5C116}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6740EF43-0288-4FDB-ADF7-6968BDE3052B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6740EF43-0288-4FDB-ADF7-6968BDE3052B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6740EF43-0288-4FDB-ADF7-6968BDE3052B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6740EF43-0288-4FDB-ADF7-6968BDE3052B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1189297-F5A4-4392-9964-7956BE6EB385}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1189297-F5A4-4392-9964-7956BE6EB385}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1189297-F5A4-4392-9964-7956BE6EB385}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1189297-F5A4-4392-9964-7956BE6EB385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A90161-DF8A-45FD-B990-DDC711A08B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A90161-DF8A-45FD-B990-DDC711A08B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A90161-DF8A-45FD-B990-DDC711A08B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A90161-DF8A-45FD-B990-DDC711A08B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FDD097F-497E-41B3-BB5E-FF8F253332A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FDD097F-497E-41B3-BB5E-FF8F253332A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FDD097F-497E-41B3-BB5E-FF8F253332A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FDD097F-497E-41B3-BB5E-FF8F253332A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D9F75A6-D5B9-496B-9C9E-77EC4962215F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9F75A6-D5B9-496B-9C9E-77EC4962215F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9F75A6-D5B9-496B-9C9E-77EC4962215F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9F75A6-D5B9-496B-9C9E-77EC4962215F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
